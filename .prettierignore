@@ -21,6 +21,11 @@ npm-shrinkwrap.json
 .env.production
 .env.development
 
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+prisma/migrations/
+
 # Minified / Bundled files
 *.min.js
 *.min.css
