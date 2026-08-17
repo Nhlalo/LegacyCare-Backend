@@ -16,7 +16,6 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-// ✅ Pass the Pool to PrismaPg
 const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({

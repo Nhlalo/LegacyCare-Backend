@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.6.0
- * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+ * Prisma Client JS version: 7.9.1
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 Prisma.prismaVersion = {
-  client: "7.6.0",
-  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
+  client: "7.9.1",
+  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -123,15 +123,79 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  name: 'name'
+  passwordHash: 'passwordHash',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  isEmailVerified: 'isEmailVerified',
+  verificationToken: 'verificationToken',
+  verificationSentAt: 'verificationSentAt',
+  resetPasswordToken: 'resetPasswordToken',
+  resetPasswordSentAt: 'resetPasswordSentAt',
+  failedLoginAttempts: 'failedLoginAttempts',
+  lockoutUntil: 'lockoutUntil',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PostScalarFieldEnum = {
+exports.Prisma.RefreshTokenScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  content: 'content',
-  published: 'published',
-  authorId: 'authorId'
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  revokedAt: 'revokedAt'
+};
+
+exports.Prisma.FuneralHomeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  subdomain: 'subdomain',
+  domain: 'domain',
+  primaryColor: 'primaryColor',
+  secondaryColor: 'secondaryColor',
+  logoUrl: 'logoUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StaffScalarFieldEnum = {
+  id: 'id',
+  funeralHomeId: 'funeralHomeId',
+  userId: 'userId',
+  role: 'role',
+  invitedAt: 'invitedAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CaseScalarFieldEnum = {
+  id: 'id',
+  funeralHomeId: 'funeralHomeId',
+  type: 'type',
+  status: 'status',
+  familyName: 'familyName',
+  deceasedName: 'deceasedName',
+  serviceDate: 'serviceDate',
+  serviceLocation: 'serviceLocation',
+  totalAmount: 'totalAmount',
+  paidAmount: 'paidAmount',
+  familyAccessToken: 'familyAccessToken',
+  linkExpiresAt: 'linkExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  caseId: 'caseId',
+  amount: 'amount',
+  method: 'method',
+  status: 'status',
+  reference: 'reference',
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -148,11 +212,47 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  OWNER: 'OWNER',
+  MANAGER: 'MANAGER',
+  STAFF: 'STAFF',
+  LIMITED: 'LIMITED'
+};
 
+exports.CaseType = exports.$Enums.CaseType = {
+  PRE_NEED: 'PRE_NEED',
+  AT_NEED: 'AT_NEED'
+};
+
+exports.CaseStatus = exports.$Enums.CaseStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  READY: 'READY',
+  CLOSED: 'CLOSED'
+};
+
+exports.PaymentMethod = exports.$Enums.PaymentMethod = {
+  CREDIT_CARD: 'CREDIT_CARD',
+  DEBIT_CARD: 'DEBIT_CARD',
+  EFT: 'EFT',
+  CASH: 'CASH',
+  DEBIT_ORDER: 'DEBIT_ORDER'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Post: 'Post'
+  RefreshToken: 'RefreshToken',
+  FuneralHome: 'FuneralHome',
+  Staff: 'Staff',
+  Case: 'Case',
+  Payment: 'Payment'
 };
 
 /**

@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -13,17 +8,143 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  passwordHash        String
+  firstName           String
+  lastName            String
+  isEmailVerified     Boolean   @default(false)
+  verificationToken   String?   @unique
+  verificationSentAt  DateTime?
+  resetPasswordToken  String?   @unique
+  resetPasswordSentAt DateTime?
+  failedLoginAttempts Int       @default(0)
+  lockoutUntil        DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  refreshTokens RefreshToken[]
+  staff         Staff?
+
+  @@index([email])
+  @@index([verificationToken])
+  @@index([resetPasswordToken])
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model RefreshToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  @@index([userId])
+  @@index([token])
+}
+
+model FuneralHome {
+  id             String   @id @default(cuid())
+  name           String
+  subdomain      String   @unique
+  domain         String?  @unique
+  primaryColor   String   @default("#1a3a5c")
+  secondaryColor String   @default("#f8f9fa")
+  logoUrl        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  staff Staff[]
+  cases Case[]
+}
+
+model Staff {
+  id            String      @id @default(cuid())
+  funeralHomeId String
+  funeralHome   FuneralHome @relation(fields: [funeralHomeId], references: [id], onDelete: Cascade)
+  userId        String      @unique
+  user          User        @relation(fields: [userId], references: [id])
+  role          Role        @default(STAFF)
+  invitedAt     DateTime    @default(now())
+  acceptedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([funeralHomeId])
+  @@index([userId])
+}
+
+model Case {
+  id                String      @id @default(cuid())
+  funeralHomeId     String
+  funeralHome       FuneralHome @relation(fields: [funeralHomeId], references: [id], onDelete: Cascade)
+  type              CaseType    @default(AT_NEED)
+  status            CaseStatus  @default(OPEN)
+  familyName        String
+  deceasedName      String?
+  serviceDate       DateTime?
+  serviceLocation   String?
+  totalAmount       Float       @default(0)
+  paidAmount        Float       @default(0)
+  familyAccessToken String?     @unique
+  linkExpiresAt     DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  payments Payment[]
+
+  @@index([funeralHomeId])
+  @@index([familyAccessToken])
+  @@index([status])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  caseId        String
+  case          Case          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  amount        Float
+  method        PaymentMethod
+  status        PaymentStatus @default(PENDING)
+  reference     String?
+  transactionId String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([caseId])
+  @@index([status])
+}
+
+enum Role {
+  OWNER
+  MANAGER
+  STAFF
+  LIMITED
+}
+
+enum CaseType {
+  PRE_NEED
+  AT_NEED
+}
+
+enum CaseStatus {
+  OPEN
+  IN_PROGRESS
+  READY
+  CLOSED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  EFT
+  CASH
+  DEBIT_ORDER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }
