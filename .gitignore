@@ -31,3 +31,4 @@ dist-ssr
 **/id_ed25519*
 .ssh/
 .env
+.env.*
