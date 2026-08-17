@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "../../generated/prisma/client";
+import { Pool } from "pg";
 import logger from "./logger.js";
 
 const connectionString = process.env.DATABASE_URL;
@@ -8,14 +9,15 @@ if (!connectionString) {
   throw new Error("DATABASE_URL environment variable is required");
 }
 
-const adapter = new PrismaPg({
+const pool = new Pool({
   connectionString,
-  pool: {
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-  },
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
+
+// ✅ Pass the Pool to PrismaPg
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({
   adapter,
