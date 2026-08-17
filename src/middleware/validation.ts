@@ -1,25 +1,22 @@
 import { Request, Response, NextFunction } from "express";
-import { AnyZodObject, ZodError, z } from "zod";
-import logger from "../lib/logger";
+import { ZodObject, ZodError } from "zod";
 
-export const validate = (schema: AnyZodObject) => {
+export const validate = (schema: ZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       req.body = await schema.parseAsync(req.body);
       next();
+      return;
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.flatten().fieldErrors;
-
-        logger.warn({ errors, path: req.path }, "Validation failed");
-
         return res.status(400).json({
           success: false,
           error: "Validation failed",
-          details: errors,
+          details: error.flatten().fieldErrors,
         });
       }
       next(error);
+      return;
     }
   };
 };
