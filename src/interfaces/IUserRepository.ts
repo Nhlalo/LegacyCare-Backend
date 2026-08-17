@@ -1,7 +1,19 @@
 import { User } from "../../generated/prisma";
 
+type UserWithoutSensitiveData = Pick<
+  User,
+  | "id"
+  | "email"
+  | "firstName"
+  | "lastName"
+  | "isEmailVerified"
+  | "failedLoginAttempts"
+  | "lockoutUntil"
+  | "createdAt"
+>;
+
 export interface IUserRepository {
-  findById(id: string): Promise<Omit<User, "passwordHash"> | null>;
+  findById(id: string): Promise<UserWithoutSensitiveData | null>;
   findByEmail(email: string): Promise<User | null>;
   findByVerificationToken(token: string): Promise<User | null>;
   findByResetToken(token: string): Promise<User | null>;
