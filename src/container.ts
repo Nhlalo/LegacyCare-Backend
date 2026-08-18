@@ -6,6 +6,7 @@ import { UserRepository } from "./repositories/UserRepository";
 import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository";
 import { FuneralHomeRepository } from "./repositories/FuneralHomeRepository";
 import { StaffRepository } from "./repositories/StaffRepository";
+import { PrismaClient } from "../generated/prisma/client";
 
 export class Container {
   private static instance: Container;
@@ -13,11 +14,21 @@ export class Container {
   private _funeralHomeService?: FuneralHomeService;
   private _emailService?: EmailService;
 
-  private constructor() {}
+  private userRepo: UserRepository;
+  private refreshTokenRepo: RefreshTokenRepository;
+  private funeralHomeRepo: FuneralHomeRepository;
+  private staffRepo: StaffRepository;
 
-  static getInstance(): Container {
+  constructor(prisma: PrismaClient) {
+    this.userRepo = new UserRepository(prisma);
+    this.refreshTokenRepo = new RefreshTokenRepository(prisma);
+    this.funeralHomeRepo = new FuneralHomeRepository(prisma);
+    this.staffRepo = new StaffRepository(prisma);
+  }
+
+  static getInstance(prisma: PrismaClient): Container {
     if (!Container.instance) {
-      Container.instance = new Container();
+      Container.instance = new Container(prisma);
     }
     return Container.instance;
   }
@@ -40,12 +51,9 @@ export class Container {
 
   get authService(): AuthService {
     if (!this._authService) {
-      const userRepo = new UserRepository();
-      const refreshTokenRepo = new RefreshTokenRepository();
-
       this._authService = new AuthService(
-        userRepo,
-        refreshTokenRepo,
+        this.userRepo,
+        this.refreshTokenRepo,
         this.emailService,
         process.env.JWT_ACCESS_SECRET!,
         process.env.JWT_REFRESH_SECRET!,
@@ -57,14 +65,10 @@ export class Container {
   }
   get funeralHomeService(): FuneralHomeService {
     if (!this._funeralHomeService) {
-      const userRepo = new UserRepository();
-      const funeralHomeRepo = new FuneralHomeRepository();
-      const staffRepo = new StaffRepository();
-
       this._funeralHomeService = new FuneralHomeService(
-        userRepo,
-        funeralHomeRepo,
-        staffRepo,
+        this.userRepo,
+        this.funeralHomeRepo,
+        this.staffRepo,
         this.emailService,
       );
     }
@@ -72,4 +76,6 @@ export class Container {
   }
 }
 
-export const container = Container.getInstance();
+export const createContainer = (prisma: PrismaClient): Container => {
+  return new Container(prisma);
+};
