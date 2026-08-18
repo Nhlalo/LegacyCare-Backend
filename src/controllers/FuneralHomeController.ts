@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { container } from "../container";
+import { FuneralHomeService } from "../services/FuneralHomeService";
 import {
   registerFuneralHomeSchema,
   updateBrandingSchema,
@@ -11,15 +11,15 @@ import {
 import { validate } from "../middleware/validation";
 import { authenticate } from "../middleware/auth.middleware";
 
-const funeralHomeService = container.funeralHomeService;
+export class FuneralHomeController {
+  constructor(private funeralHomeService: FuneralHomeService) {}
 
-export const FuneralHomeController = {
-  register: [
+  register = [
     validate(registerFuneralHomeSchema),
     async (req: Request<{}, {}, RegisterFuneralHomeInput>, res: Response) => {
       try {
         const { name, email, password, firstName, lastName } = req.body;
-        const result = await funeralHomeService.register(
+        const result = await this.funeralHomeService.register(
           name,
           email,
           password,
@@ -34,36 +34,44 @@ export const FuneralHomeController = {
           data: result,
         });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        const statusCode = error.statusCode || 400;
+        res.status(statusCode).json({
+          success: false,
+          error: error.message,
+        });
       }
     },
-  ],
+  ];
 
-  getFuneralHome: [
+  getFuneralHome = [
     authenticate,
     async (req: Request, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
         const funeralHome =
-          await funeralHomeService.getFuneralHome(funeralHomeId);
+          await this.funeralHomeService.getFuneralHome(funeralHomeId);
 
         res.json({
           success: true,
           data: funeralHome,
         });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        const statusCode = error.statusCode || 400;
+        res.status(statusCode).json({
+          success: false,
+          error: error.message,
+        });
       }
     },
-  ],
+  ];
 
-  updateBranding: [
+  updateBranding = [
     authenticate,
     validate(updateBrandingSchema),
     async (req: Request<{}, {}, UpdateBrandingInput>, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
-        const result = await funeralHomeService.updateBranding(
+        const result = await this.funeralHomeService.updateBranding(
           funeralHomeId,
           req.body,
         );
@@ -74,36 +82,44 @@ export const FuneralHomeController = {
           data: result,
         });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        const statusCode = error.statusCode || 400;
+        res.status(statusCode).json({
+          success: false,
+          error: error.message,
+        });
       }
     },
-  ],
+  ];
 
-  getStaff: [
+  getStaff = [
     authenticate,
     async (req: Request, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
-        const staff = await funeralHomeService.getStaff(funeralHomeId);
+        const staff = await this.funeralHomeService.getStaff(funeralHomeId);
 
         res.json({
           success: true,
           data: staff,
         });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        const statusCode = error.statusCode || 400;
+        res.status(statusCode).json({
+          success: false,
+          error: error.message,
+        });
       }
     },
-  ],
+  ];
 
-  inviteStaff: [
+  inviteStaff = [
     authenticate,
     validate(inviteStaffSchema),
     async (req: Request<{}, {}, InviteStaffInput>, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
         const { email, role } = req.body;
-        const result = await funeralHomeService.inviteStaff(
+        const result = await this.funeralHomeService.inviteStaff(
           funeralHomeId,
           email,
           role,
@@ -115,8 +131,12 @@ export const FuneralHomeController = {
           data: result,
         });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        const statusCode = error.statusCode || 400;
+        res.status(statusCode).json({
+          success: false,
+          error: error.message,
+        });
       }
     },
-  ],
-};
+  ];
+}
