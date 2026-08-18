@@ -5,11 +5,15 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import helmet from "helmet";
 import logger from "./lib/logger";
+import { prisma } from "./lib/prisma";
+import { createContainer } from "./container";
+
 import authRoutes from "./routes/auth.routes";
 import funeralHomeRoutes from "./routes/funeralHome.routes";
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
+const container = createContainer(prisma);
 const port = process.env.PORT || 5000;
 const gracefulShutdownTimeoutMs = parseInt(
   process.env.GRACEFUL_SHUTDOWN_TIMEOUT_MS || "30000",
@@ -48,8 +52,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/funeral-homes", funeralHomeRoutes);
+app.use("/api/auth", authRoutes(container));
+app.use("/api/funeral-homes", funeralHomeRoutes(container));
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
