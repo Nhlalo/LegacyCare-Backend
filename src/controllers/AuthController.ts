@@ -6,6 +6,11 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   verifyEmailSchema,
+  RegisterInput,
+  LoginInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
+  VerifyEmailInput,
 } from "../schemas/auth.schema";
 import { validate } from "../middleware/validation";
 
@@ -15,7 +20,7 @@ const isProduction = process.env.NODE_ENV === "production";
 export const AuthController = {
   register: [
     validate(registerSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, RegisterInput>, res: Response) => {
       try {
         const { email, password, firstName, lastName } = req.body;
         const result = await authService.register(
@@ -39,7 +44,7 @@ export const AuthController = {
 
   login: [
     validate(loginSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, LoginInput>, res: Response) => {
       try {
         const { email, password } = req.body;
         const result = await authService.login(email, password);
@@ -67,7 +72,7 @@ export const AuthController = {
   ],
   verifyEmail: [
     validate(verifyEmailSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, VerifyEmailInput>, res: Response) => {
       try {
         const { token } = req.body;
         await authService.verifyEmail(token);
@@ -84,7 +89,7 @@ export const AuthController = {
 
   forgotPassword: [
     validate(forgotPasswordSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, ForgotPasswordInput>, res: Response) => {
       try {
         const { email } = req.body;
         await authService.forgotPassword(email);
@@ -102,7 +107,7 @@ export const AuthController = {
 
   resetPassword: [
     validate(resetPasswordSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, ResetPasswordInput>, res: Response) => {
       try {
         const { token, password } = req.body;
         await authService.resetPassword(token, password);
