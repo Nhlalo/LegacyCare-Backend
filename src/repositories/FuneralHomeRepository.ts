@@ -1,9 +1,11 @@
 import { IFuneralHomeRepository } from "../interfaces/IFuneralHomeRepository";
-import { prisma } from "../lib/prisma";
+import { PrismaClient } from "../../generated/prisma/client";
 
 export class FuneralHomeRepository implements IFuneralHomeRepository {
+  constructor(private prisma: PrismaClient) {}
+
   async findById(id: string) {
-    return prisma.funeralHome.findUnique({
+    return this.prisma.funeralHome.findUnique({
       where: { id },
       include: {
         staff: {
@@ -24,18 +26,18 @@ export class FuneralHomeRepository implements IFuneralHomeRepository {
   }
 
   async findBySubdomain(subdomain: string) {
-    return prisma.funeralHome.findUnique({ where: { subdomain } });
+    return this.prisma.funeralHome.findUnique({ where: { subdomain } });
   }
 
   async findByDomain(domain: string) {
-    return prisma.funeralHome.findUnique({ where: { domain } });
+    return this.prisma.funeralHome.findUnique({ where: { domain } });
   }
 
   async create(data: { name: string; subdomain: string }) {
-    return prisma.funeralHome.create({ data });
+    return this.prisma.funeralHome.create({ data });
   }
 
   async update(id: string, data: Partial<any>) {
-    return prisma.funeralHome.update({ where: { id }, data });
+    return this.prisma.funeralHome.update({ where: { id }, data });
   }
 }

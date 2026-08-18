@@ -1,10 +1,12 @@
 import { User } from "../../generated/prisma";
 import { IUserRepository } from "../interfaces/IUserRepository";
-import { prisma } from "../lib/prisma";
+import { PrismaClient } from "../../generated/prisma/client";
 
 export class UserRepository implements IUserRepository {
+  constructor(private prisma: PrismaClient) {}
+
   async findById(id: string) {
-    return prisma.user.findUnique({
+    return this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -20,15 +22,15 @@ export class UserRepository implements IUserRepository {
   }
 
   async findByEmail(email: string) {
-    return prisma.user.findUnique({ where: { email } });
+    return this.prisma.user.findUnique({ where: { email } });
   }
 
   async findByVerificationToken(token: string) {
-    return prisma.user.findFirst({ where: { verificationToken: token } });
+    return this.prisma.user.findFirst({ where: { verificationToken: token } });
   }
 
   async findByResetToken(token: string) {
-    return prisma.user.findFirst({ where: { resetPasswordToken: token } });
+    return this.prisma.user.findFirst({ where: { resetPasswordToken: token } });
   }
 
   async create(data: {
@@ -39,7 +41,7 @@ export class UserRepository implements IUserRepository {
     verificationToken: string;
     verificationSentAt: Date;
   }): Promise<Omit<User, "passwordHash">> {
-    const user = await prisma.user.create({
+    const user = await this.prisma.user.create({
       data,
     });
 
@@ -48,18 +50,18 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(id: string, data: Partial<User>) {
-    return prisma.user.update({ where: { id }, data });
+    return this.prisma.user.update({ where: { id }, data });
   }
 
   async incrementFailedAttempts(id: string) {
-    return prisma.user.update({
+    return this.prisma.user.update({
       where: { id },
       data: { failedLoginAttempts: { increment: 1 } },
     });
   }
 
   async resetFailedAttempts(id: string) {
-    return prisma.user.update({
+    return this.prisma.user.update({
       where: { id },
       data: { failedLoginAttempts: 0, lockoutUntil: null },
     });

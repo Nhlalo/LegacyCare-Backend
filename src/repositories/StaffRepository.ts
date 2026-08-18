@@ -1,17 +1,19 @@
 import { IStaffRepository } from "../interfaces/IStaffRepository";
-import { prisma } from "../lib/prisma";
+import { PrismaClient } from "../../generated/prisma/client";
 import { Role } from "../types/index";
 
 export class StaffRepository implements IStaffRepository {
+  constructor(private prisma: PrismaClient) {}
+
   async findByUserId(userId: string) {
-    return prisma.staff.findUnique({
+    return this.prisma.staff.findUnique({
       where: { userId },
       include: { funeralHome: true },
     });
   }
 
   async findByFuneralHome(funeralHomeId: string) {
-    return prisma.staff.findMany({
+    return this.prisma.staff.findMany({
       where: { funeralHomeId },
       include: {
         user: {
@@ -22,10 +24,10 @@ export class StaffRepository implements IStaffRepository {
   }
 
   async create(data: { funeralHomeId: string; userId: string; role: Role }) {
-    return prisma.staff.create({ data });
+    return this.prisma.staff.create({ data });
   }
 
   async update(id: string, data: Partial<any>) {
-    return prisma.staff.update({ where: { id }, data });
+    return this.prisma.staff.update({ where: { id }, data });
   }
 }
