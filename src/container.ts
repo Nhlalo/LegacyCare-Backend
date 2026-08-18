@@ -1,12 +1,16 @@
 import { AuthService } from "./services/AuthService";
+import { FuneralHomeService } from "./services/FuneralHomeService";
 import { EmailService } from "./services/EmailService";
 import { EmailTemplateFactory } from "./templates/EmailTemplateFactory";
 import { UserRepository } from "./repositories/UserRepository";
 import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository";
+import { FuneralHomeRepository } from "./repositories/FuneralHomeRepository";
+import { StaffRepository } from "./repositories/StaffRepository";
 
 export class Container {
   private static instance: Container;
   private _authService?: AuthService;
+  private _funeralHomeService?: FuneralHomeService;
   private _emailService?: EmailService;
 
   private constructor() {}
@@ -50,6 +54,21 @@ export class Container {
       );
     }
     return this._authService;
+  }
+  get funeralHomeService(): FuneralHomeService {
+    if (!this._funeralHomeService) {
+      const userRepo = new UserRepository();
+      const funeralHomeRepo = new FuneralHomeRepository();
+      const staffRepo = new StaffRepository();
+
+      this._funeralHomeService = new FuneralHomeService(
+        userRepo,
+        funeralHomeRepo,
+        staffRepo,
+        this.emailService,
+      );
+    }
+    return this._funeralHomeService;
   }
 }
 
