@@ -4,6 +4,9 @@ import {
   registerFuneralHomeSchema,
   updateBrandingSchema,
   inviteStaffSchema,
+  RegisterFuneralHomeInput,
+  UpdateBrandingInput,
+  InviteStaffInput,
 } from "../schemas/funeralHome.schema";
 import { validate } from "../middleware/validation";
 import { authenticate } from "../middleware/auth.middleware";
@@ -13,7 +16,7 @@ const funeralHomeService = container.funeralHomeService;
 export const FuneralHomeController = {
   register: [
     validate(registerFuneralHomeSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, RegisterFuneralHomeInput>, res: Response) => {
       try {
         const { name, email, password, firstName, lastName } = req.body;
         const result = await funeralHomeService.register(
@@ -57,7 +60,7 @@ export const FuneralHomeController = {
   updateBranding: [
     authenticate,
     validate(updateBrandingSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, UpdateBrandingInput>, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
         const result = await funeralHomeService.updateBranding(
@@ -96,7 +99,7 @@ export const FuneralHomeController = {
   inviteStaff: [
     authenticate,
     validate(inviteStaffSchema),
-    async (req: Request, res: Response) => {
+    async (req: Request<{}, {}, InviteStaffInput>, res: Response) => {
       try {
         const funeralHomeId = (req as any).funeralHomeId;
         const { email, role } = req.body;
