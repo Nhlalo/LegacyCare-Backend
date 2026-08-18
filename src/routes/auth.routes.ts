@@ -1,15 +1,20 @@
 import { Router } from "express";
+import { Container } from "../container";
 import { AuthController } from "../controllers/AuthController";
 import { authenticate } from "../middleware/auth.middleware";
 
-const router = Router();
+export default function authRoutes(container: Container): Router {
+  const router = Router();
 
-router.post("/register", AuthController.register);
-router.post("/login", AuthController.login);
-router.post("/verify-email", AuthController.verifyEmail);
-router.post("/forgot-password", AuthController.forgotPassword);
-router.post("/reset-password", AuthController.resetPassword);
-router.post("/refresh", AuthController.refresh);
-router.post("/logout", authenticate, AuthController.logout);
+  const authController = new AuthController(container.authService);
 
-export default router;
+  router.post("/register", authController.register);
+  router.post("/login", authController.login);
+  router.post("/verify-email", authController.verifyEmail);
+  router.post("/forgot-password", authController.forgotPassword);
+  router.post("/reset-password", authController.resetPassword);
+  router.post("/refresh", authController.refresh);
+  router.post("/logout", authenticate, authController.logout);
+
+  return router;
+}
