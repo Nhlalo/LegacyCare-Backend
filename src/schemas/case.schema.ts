@@ -3,7 +3,11 @@ import { z } from "zod";
 export const createAtNeedCaseSchema = z.object({
   familyName: z.string().min(1, "Family name is required"),
   deceasedName: z.string().min(1, "Deceased name is required"),
-  serviceDate: z.string().datetime().optional(),
+  // ✅ Transform ISO string to Date
+  serviceDate: z.iso
+    .datetime()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
   serviceLocation: z.string().optional(),
   totalAmount: z.number().min(0).default(0),
 });
@@ -17,9 +21,13 @@ export const createPreNeedCaseSchema = z.object({
 export const updateCaseSchema = z.object({
   familyName: z.string().optional(),
   deceasedName: z.string().optional(),
-  serviceDate: z.iso.datetime().optional(),
+  serviceDate: z.iso
+    .datetime()
+    .optional()
+    .transform((val) => (val ? new Date(val) : undefined)),
   serviceLocation: z.string().optional(),
   status: z.enum(["OPEN", "IN_PROGRESS", "READY", "CLOSED"]).optional(),
+  totalAmount: z.number().min(0).optional(),
 });
 
 export const generateFamilyLinkSchema = z.object({
