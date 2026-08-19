@@ -51,6 +51,13 @@ export class CaseRepository implements ICaseRepository {
   }
 
   async update(id: string, data: Partial<Case>) {
-    return this.prisma.case.update({ where: { id }, data });
+    return this.prisma.case.update({
+      where: { id },
+      data,
+      include: {
+        payments: true,
+        funeralHome: true,
+      },
+    });
   }
 }
