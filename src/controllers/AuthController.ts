@@ -155,12 +155,14 @@ export class AuthController {
         success: true,
         data: { accessToken: tokens.accessToken },
       });
+      return;
     } catch (error: any) {
       const statusCode = error.statusCode || 401;
       res.status(statusCode).json({
         success: false,
         error: error.message,
       });
+      return;
     }
   };
 
