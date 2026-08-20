@@ -4,6 +4,8 @@ import crypto from "crypto";
 import { IUserRepository } from "../interfaces/IUserRepository";
 import { IRefreshTokenRepository } from "../interfaces/IRefreshTokenRepository";
 import { IEmailService } from "../interfaces/IEmailService";
+import { IStaffRepository } from "../interfaces/IStaffRepository";
+import { Staff, User } from "../../generated/prisma/client";
 import logger from "../lib/logger";
 
 const MAX_FAILED_ATTEMPTS = 5;
@@ -13,6 +15,7 @@ export class AuthService {
   constructor(
     private userRepo: IUserRepository,
     private refreshTokenRepo: IRefreshTokenRepository,
+    private staffRepo: IStaffRepository,
     private emailService: IEmailService,
     private jwtAccessSecret: string,
     private jwtRefreshSecret: string,
@@ -190,5 +193,24 @@ export class AuthService {
     } as jwt.SignOptions);
 
     return { accessToken, refreshToken };
+  }
+
+  async getAuthenticatedUser(userId: string): Promise<{
+    user: User;
+    staff: Staff | null;
+    funeralHomeId: string | null;
+  }> {
+    const user = await this.userRepo.findFullUserById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const staff = await this.staffRepo.findByUserId(user.id);
+
+    return {
+      user,
+      staff,
+      funeralHomeId: staff?.funeralHomeId || null,
+    };
   }
 }
