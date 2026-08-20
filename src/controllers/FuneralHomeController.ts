@@ -1,15 +1,13 @@
 import { Request, Response } from "express";
 import { FuneralHomeService } from "../services/FuneralHomeService";
+import { AuthRequest } from "../middleware/auth.middleware";
 import {
   registerFuneralHomeSchema,
   updateBrandingSchema,
   inviteStaffSchema,
   RegisterFuneralHomeInput,
-  UpdateBrandingInput,
-  InviteStaffInput,
 } from "../schemas/funeralHome.schema";
 import { validate } from "../middleware/validation";
-import { authenticate } from "../middleware/auth.middleware";
 
 export class FuneralHomeController {
   constructor(private funeralHomeService: FuneralHomeService) {}
@@ -44,12 +42,12 @@ export class FuneralHomeController {
   ];
 
   getFuneralHome = [
-    authenticate,
     async (req: Request, res: Response) => {
       try {
-        const funeralHomeId = (req as any).funeralHomeId;
-        const funeralHome =
-          await this.funeralHomeService.getFuneralHome(funeralHomeId);
+        const authReq = req as AuthRequest;
+        const funeralHome = await this.funeralHomeService.getFuneralHome(
+          authReq.funeralHomeId,
+        );
 
         res.json({
           success: true,
@@ -66,13 +64,12 @@ export class FuneralHomeController {
   ];
 
   updateBranding = [
-    authenticate,
     validate(updateBrandingSchema),
-    async (req: Request<{}, {}, UpdateBrandingInput>, res: Response) => {
+    async (req: Request, res: Response) => {
       try {
-        const funeralHomeId = (req as any).funeralHomeId;
+        const authReq = req as AuthRequest;
         const result = await this.funeralHomeService.updateBranding(
-          funeralHomeId,
+          authReq.funeralHomeId,
           req.body,
         );
 
@@ -92,11 +89,12 @@ export class FuneralHomeController {
   ];
 
   getStaff = [
-    authenticate,
     async (req: Request, res: Response) => {
       try {
-        const funeralHomeId = (req as any).funeralHomeId;
-        const staff = await this.funeralHomeService.getStaff(funeralHomeId);
+        const authReq = req as AuthRequest;
+        const staff = await this.funeralHomeService.getStaff(
+          authReq.funeralHomeId,
+        );
 
         res.json({
           success: true,
@@ -113,14 +111,13 @@ export class FuneralHomeController {
   ];
 
   inviteStaff = [
-    authenticate,
     validate(inviteStaffSchema),
-    async (req: Request<{}, {}, InviteStaffInput>, res: Response) => {
+    async (req: Request, res: Response) => {
       try {
-        const funeralHomeId = (req as any).funeralHomeId;
+        const authReq = req as AuthRequest;
         const { email, role } = req.body;
         const result = await this.funeralHomeService.inviteStaff(
-          funeralHomeId,
+          authReq.funeralHomeId,
           email,
           role,
         );
