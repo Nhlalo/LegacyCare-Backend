@@ -1,32 +1,33 @@
-// vitest.integration.setup.ts - INTEGRATION TESTS ONLY
 import { beforeAll, afterAll, afterEach } from "vitest";
-import { PrismaClient } from "@prisma/client";
 import { testLogger } from "./vitest.setup";
+import { prisma } from "./src/lib/prisma";
 
-let prisma: PrismaClient;
-
-// Setup real database connection
 beforeAll(async () => {
-  prisma = new PrismaClient();
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    throw new Error("DATABASE_URL must be set for integration tests");
+  }
+
   await prisma.$connect();
   testLogger.info("Integration test DB connected");
 });
 
 afterEach(async () => {
-  if (prisma) {
-    // Clean in correct order (respect foreign keys)
-    await prisma.refreshToken.deleteMany();
-    await prisma.cartItem.deleteMany();
-    await prisma.order.deleteMany();
-    await prisma.user.deleteMany();
-  }
+  if (!prisma) return;
+
+  await prisma.payment.deleteMany();
+  await prisma.case.deleteMany();
+  await prisma.staff.deleteMany();
+  await prisma.refreshToken.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.funeralHome.deleteMany();
+
+  testLogger.debug("Database cleaned after test");
 });
 
 afterAll(async () => {
   if (prisma) {
     await prisma.$disconnect();
-    testLogger.info(" Integration test DB disconnected");
+    testLogger.info("Integration test DB disconnected");
   }
 });
-
-export { prisma };
