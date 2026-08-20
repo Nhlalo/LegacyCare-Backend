@@ -1,4 +1,3 @@
-// backend/src/services/CaseService.ts
 import { ICaseRepository } from "../interfaces/ICaseRepository";
 import { IFuneralHomeRepository } from "../interfaces/IFuneralHomeRepository";
 import { IEmailService } from "../interfaces/IEmailService";
@@ -42,9 +41,6 @@ export class CaseService {
     return caseData;
   }
 
-  /**
-   * Create a pre-need case (before death, monthly payments)
-   */
   async createPreNeedCase(
     funeralHomeId: string,
     data: {
@@ -70,23 +66,14 @@ export class CaseService {
     return caseData;
   }
 
-  /**
-   * Get all cases for a funeral home
-   */
   async getCases(funeralHomeId: string) {
     return this.caseRepo.findByFuneralHome(funeralHomeId);
   }
 
-  /**
-   * Get a single case by ID
-   */
   async getCase(caseId: string) {
     return this.caseRepo.findById(caseId);
   }
 
-  /**
-   * Update a case
-   */
   async updateCase(
     caseId: string,
     data: {
@@ -103,9 +90,6 @@ export class CaseService {
     return caseData;
   }
 
-  /**
-   * Generate a family access link for a case
-   */
   async generateFamilyLink(caseId: string): Promise<{
     token: string;
     link: string;
@@ -139,9 +123,6 @@ export class CaseService {
     return { token, link, expiresAt };
   }
 
-  /**
-   * Send the family link via email
-   */
   async sendFamilyLink(caseId: string, email: string): Promise<void> {
     const caseData = await this.caseRepo.findById(caseId);
     if (!caseData) {
