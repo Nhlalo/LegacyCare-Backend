@@ -57,8 +57,8 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes(container));
 app.use("/api/funeral-homes", funeralHomeRoutes(container));
 app.use("/api/cases", caseRoutes(container));
-app.use("/api/payments", paymentRoutes);
-app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/payments", paymentRoutes(container));
+app.use("/api/dashboard", dashboardRoutes(container));
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
