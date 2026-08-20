@@ -10,6 +10,12 @@ import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository";
 import { FuneralHomeRepository } from "./repositories/FuneralHomeRepository";
 import { StaffRepository } from "./repositories/StaffRepository";
 import { CaseRepository } from "./repositories/CaseRepository";
+import { PaymentService } from "./services/PaymentService";
+import { PaymentRepository } from "./repositories/PaymentRepository";
+import { PayFastGateway } from "./lib/PayFastGateway";
+import { PayFastWebhookHandler } from "./lib/PayFastWebhookHandler";
+import { IPaymentGateway } from "./interfaces/IPaymentGateway";
+import { IWebhookHandler } from "./interfaces/IWebhookHandler";
 import { PrismaClient } from "../generated/prisma/client";
 import { RequestHandler } from "express";
 import { createAuthMiddleware } from "./middleware/auth.middleware";
@@ -20,6 +26,9 @@ export class Container {
   private _funeralHomeService?: FuneralHomeService;
   private _caseService?: CaseService;
   private _emailService?: EmailService;
+  private _paymentService?: PaymentService;
+  private _paymentGateway?: IPaymentGateway;
+  private _webhookHandler?: IWebhookHandler;
   private _authMiddleware?: RequestHandler;
 
   constructor(
@@ -28,6 +37,7 @@ export class Container {
     private funeralHomeRepo: FuneralHomeRepository,
     private staffRepo: StaffRepository,
     private caseRepo: CaseRepository,
+    private paymentRepo: PaymentRepository,
   ) {}
 
   static getInstance(
@@ -36,6 +46,7 @@ export class Container {
     funeralHomeRepo: FuneralHomeRepository,
     staffRepo: StaffRepository,
     caseRepo: CaseRepository,
+    paymentRepo: PaymentRepository,
   ): Container {
     if (!Container.instance) {
       Container.instance = new Container(
@@ -44,6 +55,7 @@ export class Container {
         funeralHomeRepo,
         staffRepo,
         caseRepo,
+        paymentRepo,
       );
     }
     return Container.instance;
@@ -118,6 +130,40 @@ export class Container {
     }
     return this._caseService;
   }
+
+  get paymentGateway(): IPaymentGateway {
+    if (!this._paymentGateway) {
+      this._paymentGateway = new PayFastGateway({
+        merchantId: process.env.PAYFAST_MERCHANT_ID!,
+        merchantKey: process.env.PAYFAST_MERCHANT_KEY!,
+        passphrase: process.env.PAYFAST_PASSPHRASE,
+        sandbox: process.env.PAYFAST_SANDBOX === "true",
+      });
+    }
+    return this._paymentGateway;
+  }
+
+  get webhookHandler(): IWebhookHandler {
+    if (!this._webhookHandler) {
+      this._webhookHandler = new PayFastWebhookHandler(
+        this.paymentRepo,
+        this.caseRepo,
+      );
+    }
+    return this._webhookHandler;
+  }
+
+  get paymentService(): PaymentService {
+    if (!this._paymentService) {
+      this._paymentService = new PaymentService(
+        this.paymentRepo,
+        this.caseRepo,
+        this.paymentGateway,
+        this.webhookHandler,
+      );
+    }
+    return this._paymentService;
+  }
 }
 
 export const createContainer = (prisma: PrismaClient): Container => {
@@ -126,6 +172,7 @@ export const createContainer = (prisma: PrismaClient): Container => {
   const funeralHomeRepo = new FuneralHomeRepository(prisma);
   const staffRepo = new StaffRepository(prisma);
   const caseRepo = new CaseRepository(prisma);
+  const paymentRepo = new PaymentRepository(prisma);
 
   return new Container(
     userRepo,
@@ -133,5 +180,6 @@ export const createContainer = (prisma: PrismaClient): Container => {
     funeralHomeRepo,
     staffRepo,
     caseRepo,
+    paymentRepo,
   );
 };
