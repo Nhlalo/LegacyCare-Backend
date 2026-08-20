@@ -1,4 +1,3 @@
-// backend/src/routes/payment.routes.ts
 import { Router } from "express";
 import { Container } from "../container";
 import { PaymentController } from "../controllers/PaymentController";
