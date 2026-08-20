@@ -1,21 +1,23 @@
 import { AuthService } from "./services/AuthService";
 import { FuneralHomeService } from "./services/FuneralHomeService";
+import { PaymentService } from "./services/PaymentService";
 import { CaseService } from "./services/CaseService";
 import { EmailService } from "./services/EmailService";
-import { EmailTemplateFactory } from "./templates/EmailTemplateFactory";
-import { FamilyLinkTemplate } from "./templates/FamilyLinkTemplate";
-import { DefaultLinkGenerator } from "./lib/DefaultLinkGenerator";
-import { UserRepository } from "./repositories/UserRepository";
+import { DashboardService } from "./services/DashboardService";
 import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository";
 import { FuneralHomeRepository } from "./repositories/FuneralHomeRepository";
 import { StaffRepository } from "./repositories/StaffRepository";
 import { CaseRepository } from "./repositories/CaseRepository";
-import { PaymentService } from "./services/PaymentService";
+import { UserRepository } from "./repositories/UserRepository";
 import { PaymentRepository } from "./repositories/PaymentRepository";
+import { EmailTemplateFactory } from "./templates/EmailTemplateFactory";
+import { FamilyLinkTemplate } from "./templates/FamilyLinkTemplate";
+import { DefaultLinkGenerator } from "./lib/DefaultLinkGenerator";
 import { PayFastGateway } from "./lib/PayFastGateway";
 import { PayFastWebhookHandler } from "./lib/PayFastWebhookHandler";
 import { IPaymentGateway } from "./interfaces/IPaymentGateway";
 import { IWebhookHandler } from "./interfaces/IWebhookHandler";
+
 import { PrismaClient } from "../generated/prisma/client";
 import { RequestHandler } from "express";
 import { createAuthMiddleware } from "./middleware/auth.middleware";
@@ -27,6 +29,7 @@ export class Container {
   private _caseService?: CaseService;
   private _emailService?: EmailService;
   private _paymentService?: PaymentService;
+  private _dashboardService?: DashboardService;
   private _paymentGateway?: IPaymentGateway;
   private _webhookHandler?: IWebhookHandler;
   private _authMiddleware?: RequestHandler;
@@ -163,6 +166,13 @@ export class Container {
       );
     }
     return this._paymentService;
+  }
+
+  get dashboardService(): DashboardService {
+    if (!this._dashboardService) {
+      this._dashboardService = new DashboardService();
+    }
+    return this._dashboardService;
   }
 }
 
