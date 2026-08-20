@@ -180,6 +180,7 @@ exports.Prisma.CaseScalarFieldEnum = {
   serviceLocation: 'serviceLocation',
   totalAmount: 'totalAmount',
   paidAmount: 'paidAmount',
+  monthlyPayment: 'monthlyPayment',
   familyAccessToken: 'familyAccessToken',
   linkExpiresAt: 'linkExpiresAt',
   createdAt: 'createdAt',

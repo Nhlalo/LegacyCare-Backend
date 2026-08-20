@@ -88,6 +88,7 @@ model Case {
   serviceLocation String?
   totalAmount     Float     @default(0)
   paidAmount      Float     @default(0)
+  monthlyPayment  Float?
   familyAccessToken String? @unique
   linkExpiresAt   DateTime?
   createdAt       DateTime  @default(now())

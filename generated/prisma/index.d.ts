@@ -6129,11 +6129,13 @@ export namespace Prisma {
   export type CaseAvgAggregateOutputType = {
     totalAmount: number | null
     paidAmount: number | null
+    monthlyPayment: number | null
   }
 
   export type CaseSumAggregateOutputType = {
     totalAmount: number | null
     paidAmount: number | null
+    monthlyPayment: number | null
   }
 
   export type CaseMinAggregateOutputType = {
@@ -6147,6 +6149,7 @@ export namespace Prisma {
     serviceLocation: string | null
     totalAmount: number | null
     paidAmount: number | null
+    monthlyPayment: number | null
     familyAccessToken: string | null
     linkExpiresAt: Date | null
     createdAt: Date | null
@@ -6164,6 +6167,7 @@ export namespace Prisma {
     serviceLocation: string | null
     totalAmount: number | null
     paidAmount: number | null
+    monthlyPayment: number | null
     familyAccessToken: string | null
     linkExpiresAt: Date | null
     createdAt: Date | null
@@ -6181,6 +6185,7 @@ export namespace Prisma {
     serviceLocation: number
     totalAmount: number
     paidAmount: number
+    monthlyPayment: number
     familyAccessToken: number
     linkExpiresAt: number
     createdAt: number
@@ -6192,11 +6197,13 @@ export namespace Prisma {
   export type CaseAvgAggregateInputType = {
     totalAmount?: true
     paidAmount?: true
+    monthlyPayment?: true
   }
 
   export type CaseSumAggregateInputType = {
     totalAmount?: true
     paidAmount?: true
+    monthlyPayment?: true
   }
 
   export type CaseMinAggregateInputType = {
@@ -6210,6 +6217,7 @@ export namespace Prisma {
     serviceLocation?: true
     totalAmount?: true
     paidAmount?: true
+    monthlyPayment?: true
     familyAccessToken?: true
     linkExpiresAt?: true
     createdAt?: true
@@ -6227,6 +6235,7 @@ export namespace Prisma {
     serviceLocation?: true
     totalAmount?: true
     paidAmount?: true
+    monthlyPayment?: true
     familyAccessToken?: true
     linkExpiresAt?: true
     createdAt?: true
@@ -6244,6 +6253,7 @@ export namespace Prisma {
     serviceLocation?: true
     totalAmount?: true
     paidAmount?: true
+    monthlyPayment?: true
     familyAccessToken?: true
     linkExpiresAt?: true
     createdAt?: true
@@ -6348,6 +6358,7 @@ export namespace Prisma {
     serviceLocation: string | null
     totalAmount: number
     paidAmount: number
+    monthlyPayment: number | null
     familyAccessToken: string | null
     linkExpiresAt: Date | null
     createdAt: Date
@@ -6384,6 +6395,7 @@ export namespace Prisma {
     serviceLocation?: boolean
     totalAmount?: boolean
     paidAmount?: boolean
+    monthlyPayment?: boolean
     familyAccessToken?: boolean
     linkExpiresAt?: boolean
     createdAt?: boolean
@@ -6404,6 +6416,7 @@ export namespace Prisma {
     serviceLocation?: boolean
     totalAmount?: boolean
     paidAmount?: boolean
+    monthlyPayment?: boolean
     familyAccessToken?: boolean
     linkExpiresAt?: boolean
     createdAt?: boolean
@@ -6422,6 +6435,7 @@ export namespace Prisma {
     serviceLocation?: boolean
     totalAmount?: boolean
     paidAmount?: boolean
+    monthlyPayment?: boolean
     familyAccessToken?: boolean
     linkExpiresAt?: boolean
     createdAt?: boolean
@@ -6440,13 +6454,14 @@ export namespace Prisma {
     serviceLocation?: boolean
     totalAmount?: boolean
     paidAmount?: boolean
+    monthlyPayment?: boolean
     familyAccessToken?: boolean
     linkExpiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "funeralHomeId" | "type" | "status" | "familyName" | "deceasedName" | "serviceDate" | "serviceLocation" | "totalAmount" | "paidAmount" | "familyAccessToken" | "linkExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["case"]>
+  export type CaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "funeralHomeId" | "type" | "status" | "familyName" | "deceasedName" | "serviceDate" | "serviceLocation" | "totalAmount" | "paidAmount" | "monthlyPayment" | "familyAccessToken" | "linkExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["case"]>
   export type CaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     funeralHome?: boolean | FuneralHomeDefaultArgs<ExtArgs>
     payments?: boolean | Case$paymentsArgs<ExtArgs>
@@ -6476,6 +6491,7 @@ export namespace Prisma {
       serviceLocation: string | null
       totalAmount: number
       paidAmount: number
+      monthlyPayment: number | null
       familyAccessToken: string | null
       linkExpiresAt: Date | null
       createdAt: Date
@@ -6915,6 +6931,7 @@ export namespace Prisma {
     readonly serviceLocation: FieldRef<"Case", 'String'>
     readonly totalAmount: FieldRef<"Case", 'Float'>
     readonly paidAmount: FieldRef<"Case", 'Float'>
+    readonly monthlyPayment: FieldRef<"Case", 'Float'>
     readonly familyAccessToken: FieldRef<"Case", 'String'>
     readonly linkExpiresAt: FieldRef<"Case", 'DateTime'>
     readonly createdAt: FieldRef<"Case", 'DateTime'>
@@ -8597,6 +8614,7 @@ export namespace Prisma {
     serviceLocation: 'serviceLocation',
     totalAmount: 'totalAmount',
     paidAmount: 'paidAmount',
+    monthlyPayment: 'monthlyPayment',
     familyAccessToken: 'familyAccessToken',
     linkExpiresAt: 'linkExpiresAt',
     createdAt: 'createdAt',
@@ -9116,6 +9134,7 @@ export namespace Prisma {
     serviceLocation?: StringNullableFilter<"Case"> | string | null
     totalAmount?: FloatFilter<"Case"> | number
     paidAmount?: FloatFilter<"Case"> | number
+    monthlyPayment?: FloatNullableFilter<"Case"> | number | null
     familyAccessToken?: StringNullableFilter<"Case"> | string | null
     linkExpiresAt?: DateTimeNullableFilter<"Case"> | Date | string | null
     createdAt?: DateTimeFilter<"Case"> | Date | string
@@ -9135,6 +9154,7 @@ export namespace Prisma {
     serviceLocation?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrderInput | SortOrder
     familyAccessToken?: SortOrderInput | SortOrder
     linkExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -9158,6 +9178,7 @@ export namespace Prisma {
     serviceLocation?: StringNullableFilter<"Case"> | string | null
     totalAmount?: FloatFilter<"Case"> | number
     paidAmount?: FloatFilter<"Case"> | number
+    monthlyPayment?: FloatNullableFilter<"Case"> | number | null
     linkExpiresAt?: DateTimeNullableFilter<"Case"> | Date | string | null
     createdAt?: DateTimeFilter<"Case"> | Date | string
     updatedAt?: DateTimeFilter<"Case"> | Date | string
@@ -9176,6 +9197,7 @@ export namespace Prisma {
     serviceLocation?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrderInput | SortOrder
     familyAccessToken?: SortOrderInput | SortOrder
     linkExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -9201,6 +9223,7 @@ export namespace Prisma {
     serviceLocation?: StringNullableWithAggregatesFilter<"Case"> | string | null
     totalAmount?: FloatWithAggregatesFilter<"Case"> | number
     paidAmount?: FloatWithAggregatesFilter<"Case"> | number
+    monthlyPayment?: FloatNullableWithAggregatesFilter<"Case"> | number | null
     familyAccessToken?: StringNullableWithAggregatesFilter<"Case"> | string | null
     linkExpiresAt?: DateTimeNullableWithAggregatesFilter<"Case"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Case"> | Date | string
@@ -9650,6 +9673,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -9669,6 +9693,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -9686,6 +9711,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9705,6 +9731,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9723,6 +9750,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -9739,6 +9767,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9756,6 +9785,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10248,6 +10278,17 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type PaymentListRelationFilter = {
     every?: PaymentWhereInput
     some?: PaymentWhereInput
@@ -10269,6 +10310,7 @@ export namespace Prisma {
     serviceLocation?: SortOrder
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrder
     familyAccessToken?: SortOrder
     linkExpiresAt?: SortOrder
     createdAt?: SortOrder
@@ -10278,6 +10320,7 @@ export namespace Prisma {
   export type CaseAvgOrderByAggregateInput = {
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrder
   }
 
   export type CaseMaxOrderByAggregateInput = {
@@ -10291,6 +10334,7 @@ export namespace Prisma {
     serviceLocation?: SortOrder
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrder
     familyAccessToken?: SortOrder
     linkExpiresAt?: SortOrder
     createdAt?: SortOrder
@@ -10308,6 +10352,7 @@ export namespace Prisma {
     serviceLocation?: SortOrder
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrder
     familyAccessToken?: SortOrder
     linkExpiresAt?: SortOrder
     createdAt?: SortOrder
@@ -10317,6 +10362,7 @@ export namespace Prisma {
   export type CaseSumOrderByAggregateInput = {
     totalAmount?: SortOrder
     paidAmount?: SortOrder
+    monthlyPayment?: SortOrder
   }
 
   export type EnumCaseTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10353,6 +10399,22 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumPaymentMethodFilter<$PrismaModel = never> = {
@@ -10706,6 +10768,14 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type FuneralHomeUpdateOneRequiredWithoutCasesNestedInput = {
     create?: XOR<FuneralHomeCreateWithoutCasesInput, FuneralHomeUncheckedCreateWithoutCasesInput>
     connectOrCreate?: FuneralHomeCreateOrConnectWithoutCasesInput
@@ -10969,6 +11039,17 @@ export namespace Prisma {
     not?: NestedEnumCaseStatusFilter<$PrismaModel> | $Enums.CaseStatus
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumCaseTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.CaseType | EnumCaseTypeFieldRefInput<$PrismaModel>
     in?: $Enums.CaseType[] | ListEnumCaseTypeFieldRefInput<$PrismaModel>
@@ -11003,6 +11084,22 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumPaymentMethodFilter<$PrismaModel = never> = {
@@ -11277,6 +11374,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -11294,6 +11392,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -11371,6 +11470,7 @@ export namespace Prisma {
     serviceLocation?: StringNullableFilter<"Case"> | string | null
     totalAmount?: FloatFilter<"Case"> | number
     paidAmount?: FloatFilter<"Case"> | number
+    monthlyPayment?: FloatNullableFilter<"Case"> | number | null
     familyAccessToken?: StringNullableFilter<"Case"> | string | null
     linkExpiresAt?: DateTimeNullableFilter<"Case"> | Date | string | null
     createdAt?: DateTimeFilter<"Case"> | Date | string
@@ -11674,6 +11774,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -11692,6 +11793,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -11724,6 +11826,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11742,6 +11845,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11800,6 +11904,7 @@ export namespace Prisma {
     serviceLocation?: string | null
     totalAmount?: number
     paidAmount?: number
+    monthlyPayment?: number | null
     familyAccessToken?: string | null
     linkExpiresAt?: Date | string | null
     createdAt?: Date | string
@@ -11846,6 +11951,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11863,6 +11969,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11880,6 +11987,7 @@ export namespace Prisma {
     serviceLocation?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
+    monthlyPayment?: NullableFloatFieldUpdateOperationsInput | number | null
     familyAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
     linkExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
