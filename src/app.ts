@@ -7,9 +7,9 @@ import helmet from "helmet";
 import logger from "./lib/logger";
 import { prisma } from "./lib/prisma";
 import { createContainer } from "./container";
-
 import authRoutes from "./routes/auth.routes";
 import funeralHomeRoutes from "./routes/funeralHome.routes";
+import caseRoutes from "./routes/case.routes";
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
@@ -54,6 +54,7 @@ app.use((req, res, next) => {
 // Routes
 app.use("/api/auth", authRoutes(container));
 app.use("/api/funeral-homes", funeralHomeRoutes(container));
+app.use("/api/cases", caseRoutes(container));
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
