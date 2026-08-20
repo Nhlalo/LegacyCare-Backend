@@ -14,6 +14,8 @@ export interface IPaymentRepository {
 
   findById(id: string): Promise<Payment | null>;
 
+  findByTransactionId(transactionId: string): Promise<Payment | null>;
+
   update(id: string, data: Partial<Payment>): Promise<Payment>;
 
   getTotalPaid(caseId: string): Promise<number>;
