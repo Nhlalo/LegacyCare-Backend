@@ -99,6 +99,10 @@ export class PaymentService {
     };
   }
 
+  async getCaseById(caseId: string) {
+    return this.caseRepo.findById(caseId);
+  }
+
   async handleWebhook(payload: any): Promise<void> {
     return this.webhookHandler.handleWebhook(payload);
   }
