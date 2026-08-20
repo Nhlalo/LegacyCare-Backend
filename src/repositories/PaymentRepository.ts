@@ -35,6 +35,12 @@ export class PaymentRepository implements IPaymentRepository {
     });
   }
 
+  async findByTransactionId(transactionId: string): Promise<Payment | null> {
+    return this.prisma.payment.findFirst({
+      where: { transactionId },
+    });
+  }
+
   async update(id: string, data: Partial<Payment>): Promise<Payment> {
     return this.prisma.payment.update({
       where: { id },
