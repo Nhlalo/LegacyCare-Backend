@@ -21,6 +21,12 @@ export class UserRepository implements IUserRepository {
     });
   }
 
+  async findFullUserById(id: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
