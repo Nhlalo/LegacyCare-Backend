@@ -20,8 +20,7 @@ export class PaymentController {
         const { caseId, amount } = req.body;
         const authReq = req as AuthRequest;
 
-        const caseData =
-          await this.paymentService["caseRepo"]?.findById(caseId);
+        const caseData = await this.paymentService.getCaseById(caseId);
         if (caseData?.funeralHomeId !== authReq.funeralHomeId) {
           return res.status(403).json({
             success: false,
@@ -57,8 +56,7 @@ export class PaymentController {
         const { caseId, amount, method, reference } = req.body;
         const authReq = req as AuthRequest;
 
-        const caseData =
-          await this.paymentService["caseRepo"]?.findById(caseId);
+        const caseData = await this.paymentService.getCaseById(caseId);
         if (caseData?.funeralHomeId !== authReq.funeralHomeId) {
           return res.status(403).json({
             success: false,
@@ -94,7 +92,7 @@ export class PaymentController {
         const { caseId } = req.params;
         const authReq = req as AuthRequest;
 
-        const caseData = await this.paymentService["caseRepo"]?.findById(
+        const caseData = await this.paymentService.getCaseById(
           caseId as string,
         );
         if (caseData?.funeralHomeId !== authReq.funeralHomeId) {
@@ -128,7 +126,7 @@ export class PaymentController {
         const { caseId } = req.params;
         const authReq = req as AuthRequest;
 
-        const caseData = await this.paymentService["caseRepo"]?.findById(
+        const caseData = await this.paymentService.getCaseById(
           caseId as string,
         );
         if (caseData?.funeralHomeId !== authReq.funeralHomeId) {
