@@ -19,8 +19,7 @@ export class PayFastWebhookHandler implements IWebhookHandler {
       return;
     }
 
-    const payments = await this.paymentRepo.findByCaseId(m_payment_id);
-    const payment = payments[0];
+    const payment = await this.paymentRepo.findByTransactionId(m_payment_id);
 
     if (!payment) {
       logger.error({ m_payment_id }, "Payment not found for webhook");
