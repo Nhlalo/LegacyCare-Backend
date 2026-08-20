@@ -10,6 +10,8 @@ import { createContainer } from "./container";
 import authRoutes from "./routes/auth.routes";
 import funeralHomeRoutes from "./routes/funeralHome.routes";
 import caseRoutes from "./routes/case.routes";
+import paymentRoutes from "./routes/payment.routes";
+import dashboardRoutes from "./routes/dashboard.routes";
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
@@ -55,6 +57,8 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes(container));
 app.use("/api/funeral-homes", funeralHomeRoutes(container));
 app.use("/api/cases", caseRoutes(container));
+app.use("/api/payments", paymentRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
