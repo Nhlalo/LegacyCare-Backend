@@ -3,8 +3,8 @@ import { z } from "zod";
 export const createAtNeedCaseSchema = z.object({
   familyName: z.string().min(1, "Family name is required"),
   deceasedName: z.string().min(1, "Deceased name is required"),
-  // ✅ Transform ISO string to Date
-  serviceDate: z.iso
+  serviceDate: z
+    .string()
     .datetime()
     .optional()
     .transform((val) => (val ? new Date(val) : undefined)),
@@ -21,7 +21,8 @@ export const createPreNeedCaseSchema = z.object({
 export const updateCaseSchema = z.object({
   familyName: z.string().optional(),
   deceasedName: z.string().optional(),
-  serviceDate: z.iso
+  serviceDate: z
+    .string()
     .datetime()
     .optional()
     .transform((val) => (val ? new Date(val) : undefined)),
