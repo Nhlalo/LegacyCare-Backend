@@ -67,6 +67,10 @@ model Staff {
   userId          String    @unique
   user            User      @relation(fields: [userId], references: [id])
   role            Role      @default(STAFF)
+  invitationToken      String?   @unique
+  invitationTokenExpiresAt DateTime?
+  active          Boolean   @default(true) 
+  removedAt       DateTime?
   invitedAt       DateTime  @default(now())
   acceptedAt      DateTime?
   createdAt       DateTime  @default(now())

@@ -5019,6 +5019,10 @@ export namespace Prisma {
     funeralHomeId: string | null
     userId: string | null
     role: $Enums.Role | null
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
+    active: boolean | null
+    removedAt: Date | null
     invitedAt: Date | null
     acceptedAt: Date | null
     createdAt: Date | null
@@ -5030,6 +5034,10 @@ export namespace Prisma {
     funeralHomeId: string | null
     userId: string | null
     role: $Enums.Role | null
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
+    active: boolean | null
+    removedAt: Date | null
     invitedAt: Date | null
     acceptedAt: Date | null
     createdAt: Date | null
@@ -5041,6 +5049,10 @@ export namespace Prisma {
     funeralHomeId: number
     userId: number
     role: number
+    invitationToken: number
+    invitationTokenExpiresAt: number
+    active: number
+    removedAt: number
     invitedAt: number
     acceptedAt: number
     createdAt: number
@@ -5054,6 +5066,10 @@ export namespace Prisma {
     funeralHomeId?: true
     userId?: true
     role?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
+    active?: true
+    removedAt?: true
     invitedAt?: true
     acceptedAt?: true
     createdAt?: true
@@ -5065,6 +5081,10 @@ export namespace Prisma {
     funeralHomeId?: true
     userId?: true
     role?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
+    active?: true
+    removedAt?: true
     invitedAt?: true
     acceptedAt?: true
     createdAt?: true
@@ -5076,6 +5096,10 @@ export namespace Prisma {
     funeralHomeId?: true
     userId?: true
     role?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
+    active?: true
+    removedAt?: true
     invitedAt?: true
     acceptedAt?: true
     createdAt?: true
@@ -5160,6 +5184,10 @@ export namespace Prisma {
     funeralHomeId: string
     userId: string
     role: $Enums.Role
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
+    active: boolean
+    removedAt: Date | null
     invitedAt: Date
     acceptedAt: Date | null
     createdAt: Date
@@ -5188,6 +5216,10 @@ export namespace Prisma {
     funeralHomeId?: boolean
     userId?: boolean
     role?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
+    active?: boolean
+    removedAt?: boolean
     invitedAt?: boolean
     acceptedAt?: boolean
     createdAt?: boolean
@@ -5201,6 +5233,10 @@ export namespace Prisma {
     funeralHomeId?: boolean
     userId?: boolean
     role?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
+    active?: boolean
+    removedAt?: boolean
     invitedAt?: boolean
     acceptedAt?: boolean
     createdAt?: boolean
@@ -5214,6 +5250,10 @@ export namespace Prisma {
     funeralHomeId?: boolean
     userId?: boolean
     role?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
+    active?: boolean
+    removedAt?: boolean
     invitedAt?: boolean
     acceptedAt?: boolean
     createdAt?: boolean
@@ -5227,13 +5267,17 @@ export namespace Prisma {
     funeralHomeId?: boolean
     userId?: boolean
     role?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
+    active?: boolean
+    removedAt?: boolean
     invitedAt?: boolean
     acceptedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type StaffOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "funeralHomeId" | "userId" | "role" | "invitedAt" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["staff"]>
+  export type StaffOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "funeralHomeId" | "userId" | "role" | "invitationToken" | "invitationTokenExpiresAt" | "active" | "removedAt" | "invitedAt" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["staff"]>
   export type StaffInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     funeralHome?: boolean | FuneralHomeDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5258,6 +5302,10 @@ export namespace Prisma {
       funeralHomeId: string
       userId: string
       role: $Enums.Role
+      invitationToken: string | null
+      invitationTokenExpiresAt: Date | null
+      active: boolean
+      removedAt: Date | null
       invitedAt: Date
       acceptedAt: Date | null
       createdAt: Date
@@ -5691,6 +5739,10 @@ export namespace Prisma {
     readonly funeralHomeId: FieldRef<"Staff", 'String'>
     readonly userId: FieldRef<"Staff", 'String'>
     readonly role: FieldRef<"Staff", 'Role'>
+    readonly invitationToken: FieldRef<"Staff", 'String'>
+    readonly invitationTokenExpiresAt: FieldRef<"Staff", 'DateTime'>
+    readonly active: FieldRef<"Staff", 'Boolean'>
+    readonly removedAt: FieldRef<"Staff", 'DateTime'>
     readonly invitedAt: FieldRef<"Staff", 'DateTime'>
     readonly acceptedAt: FieldRef<"Staff", 'DateTime'>
     readonly createdAt: FieldRef<"Staff", 'DateTime'>
@@ -8594,6 +8646,10 @@ export namespace Prisma {
     funeralHomeId: 'funeralHomeId',
     userId: 'userId',
     role: 'role',
+    invitationToken: 'invitationToken',
+    invitationTokenExpiresAt: 'invitationTokenExpiresAt',
+    active: 'active',
+    removedAt: 'removedAt',
     invitedAt: 'invitedAt',
     acceptedAt: 'acceptedAt',
     createdAt: 'createdAt',
@@ -9055,6 +9111,10 @@ export namespace Prisma {
     funeralHomeId?: StringFilter<"Staff"> | string
     userId?: StringFilter<"Staff"> | string
     role?: EnumRoleFilter<"Staff"> | $Enums.Role
+    invitationToken?: StringNullableFilter<"Staff"> | string | null
+    invitationTokenExpiresAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
+    active?: BoolFilter<"Staff"> | boolean
+    removedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     invitedAt?: DateTimeFilter<"Staff"> | Date | string
     acceptedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     createdAt?: DateTimeFilter<"Staff"> | Date | string
@@ -9068,6 +9128,10 @@ export namespace Prisma {
     funeralHomeId?: SortOrder
     userId?: SortOrder
     role?: SortOrder
+    invitationToken?: SortOrderInput | SortOrder
+    invitationTokenExpiresAt?: SortOrderInput | SortOrder
+    active?: SortOrder
+    removedAt?: SortOrderInput | SortOrder
     invitedAt?: SortOrder
     acceptedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -9079,24 +9143,32 @@ export namespace Prisma {
   export type StaffWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     userId?: string
+    invitationToken?: string
     AND?: StaffWhereInput | StaffWhereInput[]
     OR?: StaffWhereInput[]
     NOT?: StaffWhereInput | StaffWhereInput[]
     funeralHomeId?: StringFilter<"Staff"> | string
     role?: EnumRoleFilter<"Staff"> | $Enums.Role
+    invitationTokenExpiresAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
+    active?: BoolFilter<"Staff"> | boolean
+    removedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     invitedAt?: DateTimeFilter<"Staff"> | Date | string
     acceptedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     createdAt?: DateTimeFilter<"Staff"> | Date | string
     updatedAt?: DateTimeFilter<"Staff"> | Date | string
     funeralHome?: XOR<FuneralHomeScalarRelationFilter, FuneralHomeWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "userId">
+  }, "id" | "userId" | "invitationToken">
 
   export type StaffOrderByWithAggregationInput = {
     id?: SortOrder
     funeralHomeId?: SortOrder
     userId?: SortOrder
     role?: SortOrder
+    invitationToken?: SortOrderInput | SortOrder
+    invitationTokenExpiresAt?: SortOrderInput | SortOrder
+    active?: SortOrder
+    removedAt?: SortOrderInput | SortOrder
     invitedAt?: SortOrder
     acceptedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -9114,6 +9186,10 @@ export namespace Prisma {
     funeralHomeId?: StringWithAggregatesFilter<"Staff"> | string
     userId?: StringWithAggregatesFilter<"Staff"> | string
     role?: EnumRoleWithAggregatesFilter<"Staff"> | $Enums.Role
+    invitationToken?: StringNullableWithAggregatesFilter<"Staff"> | string | null
+    invitationTokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"Staff"> | Date | string | null
+    active?: BoolWithAggregatesFilter<"Staff"> | boolean
+    removedAt?: DateTimeNullableWithAggregatesFilter<"Staff"> | Date | string | null
     invitedAt?: DateTimeWithAggregatesFilter<"Staff"> | Date | string
     acceptedAt?: DateTimeNullableWithAggregatesFilter<"Staff"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Staff"> | Date | string
@@ -9591,6 +9667,10 @@ export namespace Prisma {
   export type StaffCreateInput = {
     id?: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -9604,6 +9684,10 @@ export namespace Prisma {
     funeralHomeId: string
     userId: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -9613,6 +9697,10 @@ export namespace Prisma {
   export type StaffUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9626,6 +9714,10 @@ export namespace Prisma {
     funeralHomeId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9637,6 +9729,10 @@ export namespace Prisma {
     funeralHomeId: string
     userId: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -9646,6 +9742,10 @@ export namespace Prisma {
   export type StaffUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9657,6 +9757,10 @@ export namespace Prisma {
     funeralHomeId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10215,6 +10319,10 @@ export namespace Prisma {
     funeralHomeId?: SortOrder
     userId?: SortOrder
     role?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
+    active?: SortOrder
+    removedAt?: SortOrder
     invitedAt?: SortOrder
     acceptedAt?: SortOrder
     createdAt?: SortOrder
@@ -10226,6 +10334,10 @@ export namespace Prisma {
     funeralHomeId?: SortOrder
     userId?: SortOrder
     role?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
+    active?: SortOrder
+    removedAt?: SortOrder
     invitedAt?: SortOrder
     acceptedAt?: SortOrder
     createdAt?: SortOrder
@@ -10237,6 +10349,10 @@ export namespace Prisma {
     funeralHomeId?: SortOrder
     userId?: SortOrder
     role?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
+    active?: SortOrder
+    removedAt?: SortOrder
     invitedAt?: SortOrder
     acceptedAt?: SortOrder
     createdAt?: SortOrder
@@ -11165,6 +11281,10 @@ export namespace Prisma {
   export type StaffCreateWithoutUserInput = {
     id?: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -11176,6 +11296,10 @@ export namespace Prisma {
     id?: string
     funeralHomeId: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -11229,6 +11353,10 @@ export namespace Prisma {
   export type StaffUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11240,6 +11368,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     funeralHomeId?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11337,6 +11469,10 @@ export namespace Prisma {
   export type StaffCreateWithoutFuneralHomeInput = {
     id?: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -11348,6 +11484,10 @@ export namespace Prisma {
     id?: string
     userId: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -11434,6 +11574,10 @@ export namespace Prisma {
     funeralHomeId?: StringFilter<"Staff"> | string
     userId?: StringFilter<"Staff"> | string
     role?: EnumRoleFilter<"Staff"> | $Enums.Role
+    invitationToken?: StringNullableFilter<"Staff"> | string | null
+    invitationTokenExpiresAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
+    active?: BoolFilter<"Staff"> | boolean
+    removedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     invitedAt?: DateTimeFilter<"Staff"> | Date | string
     acceptedAt?: DateTimeNullableFilter<"Staff"> | Date | string | null
     createdAt?: DateTimeFilter<"Staff"> | Date | string
@@ -11888,6 +12032,10 @@ export namespace Prisma {
     id?: string
     userId: string
     role?: $Enums.Role
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
+    active?: boolean
+    removedAt?: Date | string | null
     invitedAt?: Date | string
     acceptedAt?: Date | string | null
     createdAt?: Date | string
@@ -11914,6 +12062,10 @@ export namespace Prisma {
   export type StaffUpdateWithoutFuneralHomeInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11925,6 +12077,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11935,6 +12091,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    removedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invitedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
