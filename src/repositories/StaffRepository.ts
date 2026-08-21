@@ -23,6 +23,14 @@ export class StaffRepository implements IStaffRepository {
     });
   }
 
+  async getRole(userId: string): Promise<string | null> {
+    const staff = await this.prisma.staff.findUnique({
+      where: { userId },
+      select: { role: true },
+    });
+    return staff?.role || null;
+  }
+
   async create(data: { funeralHomeId: string; userId: string; role: Role }) {
     return this.prisma.staff.create({ data });
   }
