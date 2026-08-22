@@ -50,6 +50,7 @@ export class AuthService {
       lastName,
       verificationToken,
       verificationSentAt,
+      isEmailVerified: false,
     });
 
     await this.emailService.sendVerificationEmail(email, verificationToken);
