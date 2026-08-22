@@ -2,15 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthService } from "../services/AuthService";
 import logger from "../lib/logger";
-
-export interface AuthRequest extends Request {
-  userId: string;
-  funeralHomeId: string;
-  staffRole: string;
-  userEmail: string;
-  userFirstName: string;
-  userLastName: string;
-}
+import { AuthRequest } from "../types";
 
 export const createAuthMiddleware = (authService: AuthService) => {
   return async (req: Request, res: Response, next: NextFunction) => {
