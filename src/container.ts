@@ -4,6 +4,7 @@ import { PaymentService } from "./services/PaymentService";
 import { CaseService } from "./services/CaseService";
 import { EmailService } from "./services/EmailService";
 import { DashboardService } from "./services/DashboardService";
+import { StaffService } from "./services/StaffService";
 import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository";
 import { FuneralHomeRepository } from "./repositories/FuneralHomeRepository";
 import { StaffRepository } from "./repositories/StaffRepository";
@@ -11,6 +12,7 @@ import { CaseRepository } from "./repositories/CaseRepository";
 import { UserRepository } from "./repositories/UserRepository";
 import { PaymentRepository } from "./repositories/PaymentRepository";
 import { EmailTemplateFactory } from "./templates/EmailTemplateFactory";
+import { InvitationEmailTemplate } from "./templates/InvitationEmailTemplate";
 import { FamilyLinkTemplate } from "./templates/FamilyLinkTemplate";
 import { DefaultLinkGenerator } from "./lib/DefaultLinkGenerator";
 import { PayFastGateway } from "./lib/PayFastGateway";
@@ -30,6 +32,7 @@ export class Container {
   private _emailService?: EmailService;
   private _paymentService?: PaymentService;
   private _dashboardService?: DashboardService;
+  private _staffService?: StaffService;
   private _paymentGateway?: IPaymentGateway;
   private _webhookHandler?: IWebhookHandler;
   private _authMiddleware?: RequestHandler;
@@ -173,6 +176,23 @@ export class Container {
       this._dashboardService = new DashboardService();
     }
     return this._dashboardService;
+  }
+
+  get staffService(): StaffService {
+    if (!this._staffService) {
+      const frontendUrl = process.env.FRONTEND_URL!;
+
+      const emailTemplate = new InvitationEmailTemplate(frontendUrl);
+
+      this._staffService = new StaffService(
+        this.staffRepo,
+        this.userRepo,
+        this.funeralHomeRepo,
+        this.emailService,
+        emailTemplate,
+      );
+    }
+    return this._staffService;
   }
 }
 
