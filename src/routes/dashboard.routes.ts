@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Container } from "../container";
 import { DashboardController } from "../controllers/DashboardController";
+import { requireLimited, requireManager } from "../middleware/role.middleware";
 
 export default function dashboardRoutes(container: Container): Router {
   const router = Router();
@@ -10,8 +11,18 @@ export default function dashboardRoutes(container: Container): Router {
   );
   const authenticate = container.authMiddleware;
 
-  router.get("/overview", authenticate, ...dashboardController.getOverview);
-  router.get("/revenue", authenticate, ...dashboardController.getRevenueReport);
+  router.get(
+    "/overview",
+    authenticate,
+    requireLimited,
+    ...dashboardController.getOverview,
+  );
+  router.get(
+    "/revenue",
+    authenticate,
+    requireManager,
+    ...dashboardController.getRevenueReport,
+  );
 
   return router;
 }
