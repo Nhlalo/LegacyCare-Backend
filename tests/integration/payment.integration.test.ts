@@ -21,6 +21,7 @@ describe("Payment Integration Tests", () => {
       prisma.user.deleteMany(),
       prisma.funeralHome.deleteMany(),
     ]);
+    testLogger.debug("🧹 Database cleaned after test");
   });
 
   beforeEach(async () => {
@@ -77,10 +78,73 @@ describe("Payment Integration Tests", () => {
       expiresIn: "15m",
     });
     authToken = token;
+
+    testLogger.debug(`Created test user: ${user.id} with token`);
   });
 
+  // Helper function to create users with different roles
+  const createUserWithRole = async (role: string) => {
+    const timestamp = Date.now();
+    const user = await prisma.user.create({
+      data: {
+        email: `test-${role}-${timestamp}@test.com`,
+        passwordHash: "$2b$12$hashedpassword1234567890",
+        firstName: "Test",
+        lastName: role,
+        isEmailVerified: true,
+        verificationToken: `verify-${role}-${timestamp}`,
+        verificationSentAt: new Date(),
+      },
+    });
+
+    const funeralHome = await prisma.funeralHome.create({
+      data: {
+        name: `Test Funeral Home ${role} ${timestamp}`,
+        subdomain: `test-${role}-${timestamp}`,
+        primaryColor: "#1a3a5c",
+        secondaryColor: "#f8f9fa",
+      },
+    });
+
+    await prisma.staff.create({
+      data: {
+        funeralHomeId: funeralHome.id,
+        userId: user.id,
+        role: role as any,
+      },
+    });
+
+    const testCase = await prisma.case.create({
+      data: {
+        funeralHomeId: funeralHome.id,
+        type: "AT_NEED",
+        status: "OPEN",
+        familyName: `${role} Family`,
+        deceasedName: `${role} Deceased`,
+        totalAmount: 5000,
+        paidAmount: 0,
+      },
+    });
+
+    const jwtSecret =
+      process.env.JWT_ACCESS_SECRET || "your-super-secret-access-key-here";
+    const token = jwt.sign({ userId: user.id }, jwtSecret, {
+      expiresIn: "15m",
+    });
+
+    return { user, funeralHome, testCase, token };
+  };
+
+  const debugResponse = (response: any, testName: string) => {
+    if (response.status >= 400) {
+      console.log(`${testName} failed:`);
+      console.log("Status:", response.status);
+      console.log("Body:", JSON.stringify(response.body, null, 2));
+    }
+  };
+
   describe("POST /api/payments/manual", () => {
-    it("should record a manual payment", async () => {
+    it("should record a manual payment with STAFF role (OWNER)", async () => {
       const response = await request(app)
         .post("/api/payments/manual")
         .set("Authorization", `Bearer ${authToken}`)
@@ -97,7 +161,6 @@ describe("Payment Integration Tests", () => {
       expect(response.body.data.method).toBe("CASH");
       expect(response.body.data.status).toBe("COMPLETED");
 
-      // Verify case paid amount was updated
       const caseData = await prisma.case.findUnique({
         where: { id: testCaseId },
       });
@@ -137,33 +200,13 @@ describe("Payment Integration Tests", () => {
     });
 
     it("should return 403 for unauthorized case", async () => {
-      const timestamp = Date.now();
-      const otherFuneralHome = await prisma.funeralHome.create({
-        data: {
-          name: `Other Funeral Home ${timestamp}`,
-          subdomain: `other-${timestamp}`,
-          primaryColor: "#ff0000",
-          secondaryColor: "#ffffff",
-        },
-      });
-
-      const otherCase = await prisma.case.create({
-        data: {
-          funeralHomeId: otherFuneralHome.id,
-          type: "AT_NEED",
-          status: "OPEN",
-          familyName: "Jones",
-          deceasedName: "Mary Jones",
-          totalAmount: 3000,
-          paidAmount: 0,
-        },
-      });
+      const { testCase } = await createUserWithRole("LIMITED");
 
       const response = await request(app)
         .post("/api/payments/manual")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
-          caseId: otherCase.id,
+          caseId: testCase.id,
           amount: 500,
           method: "CASH",
           reference: "REF-456",
@@ -184,10 +227,44 @@ describe("Payment Integration Tests", () => {
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token, testCase } = await createUserWithRole("LIMITED");
+
+      const response = await request(app)
+        .post("/api/payments/manual")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+          amount: 500,
+          method: "CASH",
+          reference: "REF-123",
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
+
+    it("should allow STAFF role to record manual payment", async () => {
+      const { token, testCase } = await createUserWithRole("STAFF");
+
+      const response = await request(app)
+        .post("/api/payments/manual")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+          amount: 500,
+          method: "CASH",
+          reference: "REF-123",
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+    });
   });
 
   describe("GET /api/payments/case/:caseId", () => {
-    it("should return all payments for a case", async () => {
+    it("should return all payments for a case with LIMITED role", async () => {
       await prisma.payment.create({
         data: {
           caseId: testCaseId,
@@ -230,30 +307,10 @@ describe("Payment Integration Tests", () => {
     });
 
     it("should return 403 for unauthorized case", async () => {
-      const timestamp = Date.now();
-      const otherFuneralHome = await prisma.funeralHome.create({
-        data: {
-          name: `Other Funeral Home ${timestamp}`,
-          subdomain: `other-${timestamp}`,
-          primaryColor: "#ff0000",
-          secondaryColor: "#ffffff",
-        },
-      });
-
-      const otherCase = await prisma.case.create({
-        data: {
-          funeralHomeId: otherFuneralHome.id,
-          type: "AT_NEED",
-          status: "OPEN",
-          familyName: "Wilson",
-          deceasedName: "Robert Wilson",
-          totalAmount: 4000,
-          paidAmount: 0,
-        },
-      });
+      const { testCase } = await createUserWithRole("STAFF");
 
       const response = await request(app)
-        .get(`/api/payments/case/${otherCase.id}`)
+        .get(`/api/payments/case/${testCase.id}`)
         .set("Authorization", `Bearer ${authToken}`);
 
       expect(response.status).toBe(403);
@@ -268,13 +325,37 @@ describe("Payment Integration Tests", () => {
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
+
+    it("should allow LIMITED role to view payments", async () => {
+      const { token, testCase } = await createUserWithRole("LIMITED");
+
+      await prisma.payment.create({
+        data: {
+          caseId: testCase.id,
+          amount: 500,
+          method: "CASH",
+          status: "COMPLETED",
+          reference: "REF-001",
+        },
+      });
+
+      const response = await request(app)
+        .get(`/api/payments/case/${testCase.id}`)
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+    });
   });
 
   describe("GET /api/payments/case/:caseId/status", () => {
-    it("should return payment status for a case", async () => {
+    it("should return payment status for a case with LIMITED role", async () => {
+      const { token, testCase } = await createUserWithRole("LIMITED");
+
       await prisma.payment.create({
         data: {
-          caseId: testCaseId,
+          caseId: testCase.id,
           amount: 1000,
           method: "CASH",
           status: "COMPLETED",
@@ -284,7 +365,7 @@ describe("Payment Integration Tests", () => {
 
       await prisma.payment.create({
         data: {
-          caseId: testCaseId,
+          caseId: testCase.id,
           amount: 2000,
           method: "EFT",
           status: "COMPLETED",
@@ -293,8 +374,8 @@ describe("Payment Integration Tests", () => {
       });
 
       const response = await request(app)
-        .get(`/api/payments/case/${testCaseId}/status`)
-        .set("Authorization", `Bearer ${authToken}`);
+        .get(`/api/payments/case/${testCase.id}/status`)
+        .set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
@@ -336,30 +417,10 @@ describe("Payment Integration Tests", () => {
     });
 
     it("should return 403 for unauthorized case", async () => {
-      const timestamp = Date.now();
-      const otherFuneralHome = await prisma.funeralHome.create({
-        data: {
-          name: `Other Funeral Home ${timestamp}`,
-          subdomain: `other-${timestamp}`,
-          primaryColor: "#ff0000",
-          secondaryColor: "#ffffff",
-        },
-      });
-
-      const otherCase = await prisma.case.create({
-        data: {
-          funeralHomeId: otherFuneralHome.id,
-          type: "AT_NEED",
-          status: "OPEN",
-          familyName: "Brown",
-          deceasedName: "James Brown",
-          totalAmount: 2000,
-          paidAmount: 0,
-        },
-      });
+      const { testCase } = await createUserWithRole("STAFF");
 
       const response = await request(app)
-        .get(`/api/payments/case/${otherCase.id}/status`)
+        .get(`/api/payments/case/${testCase.id}/status`)
         .set("Authorization", `Bearer ${authToken}`);
 
       expect(response.status).toBe(403);
@@ -374,10 +435,33 @@ describe("Payment Integration Tests", () => {
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
+
+    it("should allow LIMITED role to view payment status", async () => {
+      const { token, testCase } = await createUserWithRole("LIMITED");
+
+      await prisma.payment.create({
+        data: {
+          caseId: testCase.id,
+          amount: 500,
+          method: "CASH",
+          status: "COMPLETED",
+          reference: "REF-001",
+        },
+      });
+
+      const response = await request(app)
+        .get(`/api/payments/case/${testCase.id}/status`)
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.total).toBe(5000);
+      expect(response.body.data.paid).toBe(500);
+    });
   });
 
   describe("POST /api/payments/webhook/payfast", () => {
-    it("should handle PayFast webhook (public endpoint)", async () => {
+    it("should handle PayFast webhook (public endpoint - no auth required)", async () => {
       const transactionId = `txn-${Date.now()}`;
       const payment = await prisma.payment.create({
         data: {
@@ -409,7 +493,6 @@ describe("Payment Integration Tests", () => {
       expect(updatedPayment?.status).toBe("COMPLETED");
       expect(updatedPayment?.reference).toBe("REF-WEBHOOK");
 
-      // Verify case paid amount was updated
       const caseData = await prisma.case.findUnique({
         where: { id: testCaseId },
       });
@@ -442,7 +525,6 @@ describe("Payment Integration Tests", () => {
       expect(response.status).toBe(200);
       expect(response.text).toBe("OK");
 
-      // Payment should still be pending
       const updatedPayment = await prisma.payment.findUnique({
         where: { id: payment.id },
       });
@@ -467,7 +549,7 @@ describe("Payment Integration Tests", () => {
   });
 
   describe("POST /api/payments/create", () => {
-    it("should create an online payment and return payment URL", async () => {
+    it("should create an online payment with STAFF role (OWNER)", async () => {
       const response = await request(app)
         .post("/api/payments/create")
         .set("Authorization", `Bearer ${authToken}`)
@@ -521,33 +603,13 @@ describe("Payment Integration Tests", () => {
     });
 
     it("should return 403 for unauthorized case", async () => {
-      const timestamp = Date.now();
-      const otherFuneralHome = await prisma.funeralHome.create({
-        data: {
-          name: `Other Funeral Home ${timestamp}`,
-          subdomain: `other-${timestamp}`,
-          primaryColor: "#ff0000",
-          secondaryColor: "#ffffff",
-        },
-      });
-
-      const otherCase = await prisma.case.create({
-        data: {
-          funeralHomeId: otherFuneralHome.id,
-          type: "AT_NEED",
-          status: "OPEN",
-          familyName: "Anderson",
-          deceasedName: "David Anderson",
-          totalAmount: 2000,
-          paidAmount: 0,
-        },
-      });
+      const { testCase } = await createUserWithRole("STAFF");
 
       const response = await request(app)
         .post("/api/payments/create")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
-          caseId: otherCase.id,
+          caseId: testCase.id,
           amount: 500,
           method: "CREDIT_CARD",
         });
@@ -565,6 +627,39 @@ describe("Payment Integration Tests", () => {
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
+    });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token, testCase } = await createUserWithRole("LIMITED");
+
+      const response = await request(app)
+        .post("/api/payments/create")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+          amount: 500,
+          method: "CREDIT_CARD",
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
+
+    it("should allow STAFF role to create online payment", async () => {
+      const { token, testCase } = await createUserWithRole("STAFF");
+
+      const response = await request(app)
+        .post("/api/payments/create")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+          amount: 500,
+          method: "CREDIT_CARD",
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(response.body.data.paymentUrl).toBeDefined();
     });
   });
 });

@@ -1,13 +1,4 @@
-// backend/tests/integration/case.integration.test.ts
-import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-  afterAll,
-  afterEach,
-  beforeEach,
-} from "vitest";
+import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import request from "supertest";
 import app from "../../src/app";
 import { prisma } from "../../src/lib/prisma";
@@ -19,13 +10,7 @@ describe("Case Integration Tests", () => {
   let funeralHomeId: string;
   let userId: string;
 
-  beforeAll(async () => {
-    await prisma.$connect();
-    testLogger.info("Case integration tests started");
-  });
-
   afterEach(async () => {
-    // Clean all tables in correct order
     await prisma.$transaction([
       prisma.payment.deleteMany(),
       prisma.case.deleteMany(),
@@ -34,12 +19,7 @@ describe("Case Integration Tests", () => {
       prisma.user.deleteMany(),
       prisma.funeralHome.deleteMany(),
     ]);
-    testLogger.debug("🧹 Database cleaned after test");
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
-    testLogger.info("🧪 Case integration tests completed");
+    testLogger.debug("Database cleaned after test");
   });
 
   beforeEach(async () => {
@@ -83,20 +63,59 @@ describe("Case Integration Tests", () => {
     });
     authToken = token;
 
-    testLogger.debug(` Created test user: ${user.id} with token`);
+    testLogger.debug(`✅ Created test user: ${user.id} with token`);
   });
 
-  // Helper function for debugging failed responses
   const debugResponse = (response: any, testName: string) => {
     if (response.status >= 400) {
-      console.log(`❌ ${testName} failed:`);
+      console.log(`${testName} failed:`);
       console.log("Status:", response.status);
       console.log("Body:", JSON.stringify(response.body, null, 2));
     }
   };
 
+  const createUserWithRole = async (role: string) => {
+    const timestamp = Date.now();
+    const user = await prisma.user.create({
+      data: {
+        email: `test-${role}-${timestamp}@test.com`,
+        passwordHash: "$2b$12$hashedpassword1234567890",
+        firstName: "Test",
+        lastName: role,
+        isEmailVerified: true,
+        verificationToken: `verify-${role}-${timestamp}`,
+        verificationSentAt: new Date(),
+      },
+    });
+
+    const funeralHome = await prisma.funeralHome.create({
+      data: {
+        name: `Test Funeral Home ${role} ${timestamp}`,
+        subdomain: `test-${role}-${timestamp}`,
+        primaryColor: "#1a3a5c",
+        secondaryColor: "#f8f9fa",
+      },
+    });
+
+    await prisma.staff.create({
+      data: {
+        funeralHomeId: funeralHome.id,
+        userId: user.id,
+        role: role as any,
+      },
+    });
+
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_ACCESS_SECRET || "your-super-secret-access-key-here",
+      { expiresIn: "15m" },
+    );
+
+    return { user, funeralHome, token };
+  };
+
   describe("POST /api/cases/at-need", () => {
-    it("should create an at-need case when authenticated", async () => {
+    it("should create an at-need case when authenticated with STAFF role", async () => {
       const response = await request(app)
         .post("/api/cases/at-need")
         .set("Authorization", `Bearer ${authToken}`)
@@ -164,10 +183,26 @@ describe("Case Integration Tests", () => {
       expect(response.body.success).toBe(false);
       expect(response.body.details).toBeDefined();
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+
+      const response = await request(app)
+        .post("/api/cases/at-need")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          familyName: "Smith",
+          deceasedName: "John Smith",
+          totalAmount: 5000,
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("POST /api/cases/pre-need", () => {
-    it("should create a pre-need case when authenticated", async () => {
+    it("should create a pre-need case when authenticated with STAFF role", async () => {
       const response = await request(app)
         .post("/api/cases/pre-need")
         .set("Authorization", `Bearer ${authToken}`)
@@ -220,10 +255,26 @@ describe("Case Integration Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body.details).toBeDefined();
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+
+      const response = await request(app)
+        .post("/api/cases/pre-need")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          familyName: "Williams",
+          monthlyPayment: 50,
+          totalAmount: 6000,
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("GET /api/cases", () => {
-    it("should return list of cases for the funeral home", async () => {
+    it("should return list of cases for the funeral home with LIMITED role", async () => {
       await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -278,7 +329,7 @@ describe("Case Integration Tests", () => {
   });
 
   describe("GET /api/cases/:id", () => {
-    it("should return a specific case", async () => {
+    it("should return a specific case with LIMITED role", async () => {
       const testCase = await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -342,7 +393,7 @@ describe("Case Integration Tests", () => {
   });
 
   describe("PUT /api/cases/:id", () => {
-    it("should update a case", async () => {
+    it("should update a case with STAFF role", async () => {
       const testCase = await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -403,10 +454,35 @@ describe("Case Integration Tests", () => {
       expect(response.status).toBe(403);
       expect(response.body.error).toBe("Unauthorized");
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+      const testCase = await prisma.case.create({
+        data: {
+          funeralHomeId: funeralHomeId,
+          type: "AT_NEED",
+          status: "OPEN",
+          familyName: "Taylor",
+          deceasedName: "James Taylor",
+          totalAmount: 5000,
+          paidAmount: 0,
+        },
+      });
+
+      const response = await request(app)
+        .put(`/api/cases/${testCase.id}`)
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          familyName: "Taylor Updated",
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("POST /api/cases/generate-link", () => {
-    it("should generate a family link for a case", async () => {
+    it("should generate a family link for a case with STAFF role", async () => {
       const testCase = await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -481,10 +557,35 @@ describe("Case Integration Tests", () => {
       expect(response.status).toBe(403);
       expect(response.body.error).toBe("Unauthorized");
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+      const testCase = await prisma.case.create({
+        data: {
+          funeralHomeId: funeralHomeId,
+          type: "AT_NEED",
+          status: "OPEN",
+          familyName: "Brown",
+          deceasedName: "Robert Brown",
+          totalAmount: 3000,
+          paidAmount: 0,
+        },
+      });
+
+      const response = await request(app)
+        .post("/api/cases/generate-link")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("POST /api/cases/send-link", () => {
-    it("should send a family link email", async () => {
+    it("should send a family link email with STAFF role", async () => {
       const testCase = await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -538,10 +639,36 @@ describe("Case Integration Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body.error).toBe("Email is required");
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+      const testCase = await prisma.case.create({
+        data: {
+          funeralHomeId: funeralHomeId,
+          type: "AT_NEED",
+          status: "OPEN",
+          familyName: "Davis",
+          deceasedName: "Michael Davis",
+          totalAmount: 3000,
+          paidAmount: 0,
+        },
+      });
+
+      const response = await request(app)
+        .post("/api/cases/send-link")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          caseId: testCase.id,
+          email: "family@test.com",
+        });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("POST /api/cases/:id/close", () => {
-    it("should close a case", async () => {
+    it("should close a case with STAFF role", async () => {
       const testCase = await prisma.case.create({
         data: {
           funeralHomeId: funeralHomeId,
@@ -604,10 +731,32 @@ describe("Case Integration Tests", () => {
       expect(response.status).toBe(403);
       expect(response.body.error).toBe("Unauthorized");
     });
+
+    it("should return 403 if user has LIMITED role (requireStaff)", async () => {
+      const { token } = await createUserWithRole("LIMITED");
+      const testCase = await prisma.case.create({
+        data: {
+          funeralHomeId: funeralHomeId,
+          type: "AT_NEED",
+          status: "OPEN",
+          familyName: "Wilson",
+          deceasedName: "Charles Wilson",
+          totalAmount: 4000,
+          paidAmount: 0,
+        },
+      });
+
+      const response = await request(app)
+        .post(`/api/cases/${testCase.id}/close`)
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe("Insufficient permissions");
+    });
   });
 
   describe("GET /api/cases/public/:token", () => {
-    it("should return case data for valid token", async () => {
+    it("should return case data for valid token (public - no auth required)", async () => {
       const accessToken = `test-token-${Date.now()}`;
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 30);
