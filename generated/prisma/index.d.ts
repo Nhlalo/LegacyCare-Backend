@@ -1553,6 +1553,8 @@ export namespace Prisma {
     isEmailVerified: boolean | null
     verificationToken: string | null
     verificationSentAt: Date | null
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
     resetPasswordToken: string | null
     resetPasswordSentAt: Date | null
     failedLoginAttempts: number | null
@@ -1570,6 +1572,8 @@ export namespace Prisma {
     isEmailVerified: boolean | null
     verificationToken: string | null
     verificationSentAt: Date | null
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
     resetPasswordToken: string | null
     resetPasswordSentAt: Date | null
     failedLoginAttempts: number | null
@@ -1587,6 +1591,8 @@ export namespace Prisma {
     isEmailVerified: number
     verificationToken: number
     verificationSentAt: number
+    invitationToken: number
+    invitationTokenExpiresAt: number
     resetPasswordToken: number
     resetPasswordSentAt: number
     failedLoginAttempts: number
@@ -1614,6 +1620,8 @@ export namespace Prisma {
     isEmailVerified?: true
     verificationToken?: true
     verificationSentAt?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
     resetPasswordToken?: true
     resetPasswordSentAt?: true
     failedLoginAttempts?: true
@@ -1631,6 +1639,8 @@ export namespace Prisma {
     isEmailVerified?: true
     verificationToken?: true
     verificationSentAt?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
     resetPasswordToken?: true
     resetPasswordSentAt?: true
     failedLoginAttempts?: true
@@ -1648,6 +1658,8 @@ export namespace Prisma {
     isEmailVerified?: true
     verificationToken?: true
     verificationSentAt?: true
+    invitationToken?: true
+    invitationTokenExpiresAt?: true
     resetPasswordToken?: true
     resetPasswordSentAt?: true
     failedLoginAttempts?: true
@@ -1752,6 +1764,8 @@ export namespace Prisma {
     isEmailVerified: boolean
     verificationToken: string | null
     verificationSentAt: Date | null
+    invitationToken: string | null
+    invitationTokenExpiresAt: Date | null
     resetPasswordToken: string | null
     resetPasswordSentAt: Date | null
     failedLoginAttempts: number
@@ -1788,6 +1802,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: boolean
     verificationSentAt?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
     resetPasswordToken?: boolean
     resetPasswordSentAt?: boolean
     failedLoginAttempts?: boolean
@@ -1808,6 +1824,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: boolean
     verificationSentAt?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
     resetPasswordToken?: boolean
     resetPasswordSentAt?: boolean
     failedLoginAttempts?: boolean
@@ -1825,6 +1843,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: boolean
     verificationSentAt?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
     resetPasswordToken?: boolean
     resetPasswordSentAt?: boolean
     failedLoginAttempts?: boolean
@@ -1842,6 +1862,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: boolean
     verificationSentAt?: boolean
+    invitationToken?: boolean
+    invitationTokenExpiresAt?: boolean
     resetPasswordToken?: boolean
     resetPasswordSentAt?: boolean
     failedLoginAttempts?: boolean
@@ -1850,7 +1872,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "isEmailVerified" | "verificationToken" | "verificationSentAt" | "resetPasswordToken" | "resetPasswordSentAt" | "failedLoginAttempts" | "lockoutUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "isEmailVerified" | "verificationToken" | "verificationSentAt" | "invitationToken" | "invitationTokenExpiresAt" | "resetPasswordToken" | "resetPasswordSentAt" | "failedLoginAttempts" | "lockoutUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
     staff?: boolean | User$staffArgs<ExtArgs>
@@ -1874,6 +1896,8 @@ export namespace Prisma {
       isEmailVerified: boolean
       verificationToken: string | null
       verificationSentAt: Date | null
+      invitationToken: string | null
+      invitationTokenExpiresAt: Date | null
       resetPasswordToken: string | null
       resetPasswordSentAt: Date | null
       failedLoginAttempts: number
@@ -2313,6 +2337,8 @@ export namespace Prisma {
     readonly isEmailVerified: FieldRef<"User", 'Boolean'>
     readonly verificationToken: FieldRef<"User", 'String'>
     readonly verificationSentAt: FieldRef<"User", 'DateTime'>
+    readonly invitationToken: FieldRef<"User", 'String'>
+    readonly invitationTokenExpiresAt: FieldRef<"User", 'DateTime'>
     readonly resetPasswordToken: FieldRef<"User", 'String'>
     readonly resetPasswordSentAt: FieldRef<"User", 'DateTime'>
     readonly failedLoginAttempts: FieldRef<"User", 'Int'>
@@ -8603,6 +8629,8 @@ export namespace Prisma {
     isEmailVerified: 'isEmailVerified',
     verificationToken: 'verificationToken',
     verificationSentAt: 'verificationSentAt',
+    invitationToken: 'invitationToken',
+    invitationTokenExpiresAt: 'invitationTokenExpiresAt',
     resetPasswordToken: 'resetPasswordToken',
     resetPasswordSentAt: 'resetPasswordSentAt',
     failedLoginAttempts: 'failedLoginAttempts',
@@ -8872,6 +8900,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFilter<"User"> | boolean
     verificationToken?: StringNullableFilter<"User"> | string | null
     verificationSentAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    invitationToken?: StringNullableFilter<"User"> | string | null
+    invitationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     resetPasswordToken?: StringNullableFilter<"User"> | string | null
     resetPasswordSentAt?: DateTimeNullableFilter<"User"> | Date | string | null
     failedLoginAttempts?: IntFilter<"User"> | number
@@ -8891,6 +8921,8 @@ export namespace Prisma {
     isEmailVerified?: SortOrder
     verificationToken?: SortOrderInput | SortOrder
     verificationSentAt?: SortOrderInput | SortOrder
+    invitationToken?: SortOrderInput | SortOrder
+    invitationTokenExpiresAt?: SortOrderInput | SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordSentAt?: SortOrderInput | SortOrder
     failedLoginAttempts?: SortOrder
@@ -8905,6 +8937,7 @@ export namespace Prisma {
     id?: string
     email?: string
     verificationToken?: string
+    invitationToken?: string
     resetPasswordToken?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -8914,6 +8947,7 @@ export namespace Prisma {
     lastName?: StringFilter<"User"> | string
     isEmailVerified?: BoolFilter<"User"> | boolean
     verificationSentAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    invitationTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     resetPasswordSentAt?: DateTimeNullableFilter<"User"> | Date | string | null
     failedLoginAttempts?: IntFilter<"User"> | number
     lockoutUntil?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -8921,7 +8955,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     refreshTokens?: RefreshTokenListRelationFilter
     staff?: XOR<StaffNullableScalarRelationFilter, StaffWhereInput> | null
-  }, "id" | "email" | "verificationToken" | "resetPasswordToken">
+  }, "id" | "email" | "verificationToken" | "invitationToken" | "resetPasswordToken">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8932,6 +8966,8 @@ export namespace Prisma {
     isEmailVerified?: SortOrder
     verificationToken?: SortOrderInput | SortOrder
     verificationSentAt?: SortOrderInput | SortOrder
+    invitationToken?: SortOrderInput | SortOrder
+    invitationTokenExpiresAt?: SortOrderInput | SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordSentAt?: SortOrderInput | SortOrder
     failedLoginAttempts?: SortOrder
@@ -8957,6 +8993,8 @@ export namespace Prisma {
     isEmailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     verificationSentAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    invitationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    invitationTokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     resetPasswordToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetPasswordSentAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     failedLoginAttempts?: IntWithAggregatesFilter<"User"> | number
@@ -9392,6 +9430,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -9411,6 +9451,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -9430,6 +9472,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -9449,6 +9493,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -9468,6 +9514,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -9485,6 +9533,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -9502,6 +9552,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -10076,6 +10128,8 @@ export namespace Prisma {
     isEmailVerified?: SortOrder
     verificationToken?: SortOrder
     verificationSentAt?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordSentAt?: SortOrder
     failedLoginAttempts?: SortOrder
@@ -10097,6 +10151,8 @@ export namespace Prisma {
     isEmailVerified?: SortOrder
     verificationToken?: SortOrder
     verificationSentAt?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordSentAt?: SortOrder
     failedLoginAttempts?: SortOrder
@@ -10114,6 +10170,8 @@ export namespace Prisma {
     isEmailVerified?: SortOrder
     verificationToken?: SortOrder
     verificationSentAt?: SortOrder
+    invitationToken?: SortOrder
+    invitationTokenExpiresAt?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordSentAt?: SortOrder
     failedLoginAttempts?: SortOrder
@@ -11387,6 +11445,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -11405,6 +11465,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -11439,6 +11501,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -11457,6 +11521,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -11661,6 +11727,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -11679,6 +11747,8 @@ export namespace Prisma {
     isEmailVerified?: boolean
     verificationToken?: string | null
     verificationSentAt?: Date | string | null
+    invitationToken?: string | null
+    invitationTokenExpiresAt?: Date | string | null
     resetPasswordToken?: string | null
     resetPasswordSentAt?: Date | string | null
     failedLoginAttempts?: number
@@ -11750,6 +11820,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number
@@ -11768,6 +11840,8 @@ export namespace Prisma {
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     verificationSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invitationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    invitationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedLoginAttempts?: IntFieldUpdateOperationsInput | number

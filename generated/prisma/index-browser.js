@@ -129,6 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   isEmailVerified: 'isEmailVerified',
   verificationToken: 'verificationToken',
   verificationSentAt: 'verificationSentAt',
+  invitationToken: 'invitationToken',
+  invitationTokenExpiresAt: 'invitationTokenExpiresAt',
   resetPasswordToken: 'resetPasswordToken',
   resetPasswordSentAt: 'resetPasswordSentAt',
   failedLoginAttempts: 'failedLoginAttempts',

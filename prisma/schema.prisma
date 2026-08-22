@@ -17,6 +17,8 @@ model User {
   isEmailVerified   Boolean   @default(false)
   verificationToken String?   @unique
   verificationSentAt DateTime?
+  invitationToken      String?   @unique
+  invitationTokenExpiresAt DateTime?
   resetPasswordToken String?  @unique
   resetPasswordSentAt DateTime?
   failedLoginAttempts Int     @default(0)

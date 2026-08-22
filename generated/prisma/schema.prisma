@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id                  String    @id @default(cuid())
-  email               String    @unique
-  passwordHash        String
-  firstName           String
-  lastName            String
-  isEmailVerified     Boolean   @default(false)
-  verificationToken   String?   @unique
-  verificationSentAt  DateTime?
-  resetPasswordToken  String?   @unique
-  resetPasswordSentAt DateTime?
-  failedLoginAttempts Int       @default(0)
-  lockoutUntil        DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  id                       String    @id @default(cuid())
+  email                    String    @unique
+  passwordHash             String
+  firstName                String
+  lastName                 String
+  isEmailVerified          Boolean   @default(false)
+  verificationToken        String?   @unique
+  verificationSentAt       DateTime?
+  invitationToken          String?   @unique
+  invitationTokenExpiresAt DateTime?
+  resetPasswordToken       String?   @unique
+  resetPasswordSentAt      DateTime?
+  failedLoginAttempts      Int       @default(0)
+  lockoutUntil             DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 
   refreshTokens RefreshToken[]
   staff         Staff?
