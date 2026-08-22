@@ -1,4 +1,5 @@
 import { Staff } from "../../generated/prisma";
+import { StaffWithUser } from "../types";
 
 export interface IStaffRepository {
   findByUserId(userId: string): Promise<Staff | null>;
@@ -12,7 +13,7 @@ export interface IStaffRepository {
     invitationToken: string;
   }): Promise<Staff>;
   update(id: string, data: Partial<Staff>): Promise<Staff>;
-  softDelete(id: string): Promise<Staff>;
-  reactivate(id: string): Promise<Staff>;
+  softDelete(id: string): Promise<StaffWithUser>;
+  reactivate(id: string): Promise<StaffWithUser>;
   findAllIncludingInactive(funeralHomeId: string): Promise<Staff[]>;
 }
