@@ -10,7 +10,7 @@ import {
   GenerateFamilyLinkInput,
 } from "../schemas/case.schema";
 import { validate } from "../middleware/validation";
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../types";
 
 export class CaseController {
   constructor(private caseService: CaseService) {}

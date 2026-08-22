@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DashboardService } from "../services/DashboardService";
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../types";
 
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}

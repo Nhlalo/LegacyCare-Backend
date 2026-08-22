@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { FuneralHomeService } from "../services/FuneralHomeService";
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../types";
 import {
   registerFuneralHomeSchema,
   updateBrandingSchema,

@@ -8,7 +8,7 @@ import {
 } from "../schemas/payment.schema";
 import { validate } from "../middleware/validation";
 import logger from "../lib/logger";
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../types";
 
 export class PaymentController {
   constructor(private paymentService: PaymentService) {}
