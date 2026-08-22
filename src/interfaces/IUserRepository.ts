@@ -23,9 +23,12 @@ export interface IUserRepository {
     passwordHash: string;
     firstName: string;
     lastName: string;
+    invitationToken?: string;
+    invitationTokenExpiresAt?: Date;
     verificationToken: string;
     verificationSentAt: Date;
-  }): Promise<Omit<User, "passwordHash">>;
+    isEmailVerified: boolean;
+  }): Promise<User>;
   update(id: string, data: Partial<User>): Promise<User>;
   incrementFailedAttempts(id: string): Promise<User>;
   resetFailedAttempts(id: string): Promise<User>;
