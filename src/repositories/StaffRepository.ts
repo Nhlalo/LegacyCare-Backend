@@ -1,6 +1,6 @@
 import { IStaffRepository } from "../interfaces/IStaffRepository";
 import { PrismaClient } from "../../generated/prisma/client";
-import { Role } from "../types/index";
+import { Role, StaffWithUser } from "../types/index";
 
 export class StaffRepository implements IStaffRepository {
   constructor(private prisma: PrismaClient) {}
@@ -115,7 +115,7 @@ export class StaffRepository implements IStaffRepository {
     });
   }
 
-  async softDelete(id: string) {
+  async softDelete(id: string): Promise<StaffWithUser> {
     return this.prisma.staff.update({
       where: { id },
       data: {
@@ -135,7 +135,7 @@ export class StaffRepository implements IStaffRepository {
     });
   }
 
-  async reactivate(id: string) {
+  async reactivate(id: string): Promise<StaffWithUser> {
     return this.prisma.staff.update({
       where: { id },
       data: {
