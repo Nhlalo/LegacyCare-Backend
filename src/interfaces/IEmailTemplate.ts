@@ -12,3 +12,13 @@ export interface IFamilyLinkEmailTemplate extends IEmailTemplate {
     expiresAt: Date;
   }): string;
 }
+export interface IInvitationLinkEmailTemplate {
+  getSubject(funeralHomeName: string): string;
+  html(data: {
+    email: string;
+    token: string;
+    role: string;
+    tempPassword?: string;
+    funeralHomeName: string;
+  }): string;
+}
