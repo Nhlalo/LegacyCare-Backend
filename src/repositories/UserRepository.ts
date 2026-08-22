@@ -44,15 +44,15 @@ export class UserRepository implements IUserRepository {
     passwordHash: string;
     firstName: string;
     lastName: string;
+    invitationToken?: string;
+    invitationTokenExpiresAt?: Date;
     verificationToken: string;
     verificationSentAt: Date;
-  }): Promise<Omit<User, "passwordHash">> {
-    const user = await this.prisma.user.create({
+    isEmailVerified: boolean;
+  }): Promise<User> {
+    return this.prisma.user.create({
       data,
     });
-
-    const { passwordHash, ...userWithoutPassword } = user;
-    return userWithoutPassword;
   }
 
   async update(id: string, data: Partial<User>) {
